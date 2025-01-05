@@ -20,6 +20,9 @@
       <canvas id="canvas" ></canvas> 
     </div>
 
+    <button id="start-button">ポーズ検出開始</button>
+    
+
     <table id="first-table">
       <tr>
         <th>部位</th>
@@ -140,6 +143,18 @@
         <td id="knee-angle-score">-</td>
       </tr>
     </table>  
+
+    <script src="/javascripts/pose_direction.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const startButton = document.getElementById('start-button');
+        if (startButton) {
+          startButton.addEventListener('click', function() {
+            startPoseDetection(); // pose_direction.js内の関数を呼び出す
+          });
+        }
+      });
+    </script>
 
   </body>
 </html>

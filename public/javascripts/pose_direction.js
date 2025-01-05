@@ -75,46 +75,33 @@ function CalcKneeAngle(keypoints) {
    return Math.floor(angleDegrees);
 }
 
+function startPoseDetection() {
+  const imageElement = document.getElementById('img');
+  const canvas = document.getElementById('canvas');
 
+  const ctx = canvas.getContext('2d');
 
+  canvas.width = imageElement.clientWidth;
+  canvas.height = imageElement.clientHeight;
 
-document.addEventListener('DOMContentLoaded', async() => {
-const imageElement = document.getElementById('img')
-const imageElement1 = document.getElementById('img1')
-const imageElement2 = document.getElementById('img2')
-const canvas = document.getElementById('canvas');
+  ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
 
-const ctx = canvas.getContext('2d');
+  poseDetection.createDetector(poseDetection.SupportedModels.MoveNet).then(detector => {
+    detector.estimatePoses(imageElement).then(poses => {
+      console.log(poses[0].keypoints);
+      console.log(CalcKneeAngle(poses[0].keypoints));
 
+      keypointIds.forEach(function(item, index) {
+        const keypoint = poses[0].keypoints[index];
 
-canvas.width = imageElement.clientWidth;
-canvas.height = imageElement.clientHeight;
+        document.getElementById(item + '-score').innerHTML = Math.floor(keypoint.score * 100);
+        document.getElementById(item + '-x').innerHTML = Math.floor(keypoint.x);
+        document.getElementById(item + '-y').innerHTML = Math.floor(keypoint.y);
+        document.getElementById('knee-angle-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
 
-
-ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
-
-const detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet);
-const poses = await detector.estimatePoses(imageElement)
-
-console.log(poses[0].keypoints)
-
-
-console.log(CalcKneeAngle(poses[0].keypoints))
-
-
-keypointIds.forEach(function(item, index){
-keypoint = poses[0].keypoints[index]
-
-document.getElementById(item + '-score').innerHTML = Math.floor(keypoint.score * 100)
-document.getElementById(item + '-x').innerHTML = Math.floor(keypoint.x)
-document.getElementById(item + '-y').innerHTML = Math.floor(keypoint.y)
-document.getElementById('knee-angle-score').innerHTML = CalcKneeAngle(poses[0].keypoints)
-
-
-drawKeypoints(ctx, poses[0].keypoints);
-drawSkeleton(ctx, poses[0].keypoints);
-})
-
-
+        drawKeypoints(ctx, poses[0].keypoints);
+        drawSkeleton(ctx, poses[0].keypoints);
+      });
+    });
+  });
 }
-)
