@@ -1,0 +1,17 @@
+<h1>バク転診断</h1>
+<p>動画入力フォーム</p>
+
+<%= form_with model: @back_flip_analysis do |f| %>
+
+  <div>
+    <%= f.label :takeoff_image, "飛び出し画像を入力してください" %>
+    <%= f.file_field :takeoff_image %>
+  </div>
+
+  <div>
+    <%= f.label :landing_image, "着手画像を入力してください" %>
+    <%= f.file_field :landing_image %>
+  </div>
+
+  <%= f.submit '保存'%>
+<% end %>
