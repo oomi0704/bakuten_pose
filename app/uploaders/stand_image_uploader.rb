@@ -18,7 +18,7 @@ class StandImageUploader < CarrierWave::Uploader::Base
   end
 
   def default_url
-    'stand.jpeg'
+    'stand.png'
   end
 
 

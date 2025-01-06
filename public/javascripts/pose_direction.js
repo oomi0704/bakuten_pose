@@ -45,11 +45,24 @@ function CalcKneeAngle(keypoints) {
     const knee = keypoints[13];
     const ankle = keypoints[15];
   
-    if (CalcAngle(hip, knee, ankle) <= 90) {
-        return "しゃがみすぎ" + CalcAngle(hip, knee, ankle);
+    if (CalcAngle(hip, knee, ankle) <= 50) {
+        return CalcAngle(hip, knee, ankle) + "度　しゃがみすぎです";
     } else {
-        return CalcAngle(hip, knee, ankle);
+        return CalcAngle(hip, knee, ankle) + "度　⚪︎";
     }
+}
+
+
+function CalcKneeBendAngle(keypoints) {
+  const hip = keypoints[11];
+  const knee = keypoints[13];
+  const ankle = keypoints[15];
+
+  if (CalcAngle(hip, knee, ankle) < 140) {
+      return CalcAngle(hip, knee, ankle) + "度　膝が曲がっています";
+  } else {
+      return CalcAngle(hip, knee, ankle) + "度　⚪︎";
+  }
 }
 
 function CalcBodyAngle(keypoints) {
@@ -57,8 +70,13 @@ function CalcBodyAngle(keypoints) {
   const hip = keypoints[11];
   const knee = keypoints[13];
   
-  
-  return CalcAngle(shoulder, hip, knee);
+  if (60 <= CalcAngle(shoulder, hip, knee) <= 100) {
+    return CalcAngle(shoulder, hip, knee) + "度　⚪︎";
+} else if (CalcAngle(shoulder, hip, knee) < 60) {
+    return CalcAngle(shoulder, hip, knee) + "度　体を前に倒しすぎです";
+  } else if (CalcAngle(shoulder, hip, knee) > 100) {
+    return CalcAngle(shoulder, hip, knee) + "度　体を後ろに倒しすぎです";
+  }
 }
 
 function CalcAngle(start, mid, end) {
@@ -134,10 +152,15 @@ function startPoseDetection() {
     detector.estimatePoses(imageElement_fly).then(poses => {
       console.log(poses[0].keypoints);
 
-      document.getElementById('knee-fly-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
-      document.getElementById('body-fly-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
+
       drawKeypoints(ctx_fly, poses[0].keypoints);
       drawSkeleton(ctx_fly, poses[0].keypoints);
+      document.getElementById('foot-fly-score').innerHTML = "足";
+      document.getElementById('knee-spread-fly-score').innerHTML = "膝";
+      document.getElementById('knee-bend-fly-score').innerHTML = CalcKneeBendAngle(poses[0].keypoints);
+      document.getElementById('body-fly-score').innerHTML = "体";
+      document.getElementById('hip-height-fly-score').innerHTML = "腰";
+      document.getElementById('arm-swing-fly-score').innerHTML = "腕";
     });
   });
 
@@ -146,7 +169,7 @@ function startPoseDetection() {
     detector.estimatePoses(imageElement_land).then(poses => {
       console.log(poses[0].keypoints);
 
-      document.getElementById('knee-land-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
+      document.getElementById('knee-bend-land-score').innerHTML = CalcKneeBendAngle(poses[0].keypoints);
       document.getElementById('body-land-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
       drawKeypoints(ctx_land, poses[0].keypoints);
       drawSkeleton(ctx_land, poses[0].keypoints);
