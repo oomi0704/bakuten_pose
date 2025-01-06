@@ -10,6 +10,7 @@
   </head>
   
   <body>
+    <button id="start-button">診断開始</button>
     <div id="container">
     
       <% if @user.stand_image.present? %>
@@ -20,6 +21,8 @@
       <canvas id="canvas_stand" ></canvas> 
       <%= render 'pose/pose_stand' %>
     </div>
+
+
 
      <div id="container">
       <% if @user.fly_image.present? %>
@@ -40,8 +43,6 @@
       <canvas id="canvas_land" ></canvas> 
       <%= render 'pose/pose_land' %>
     </div>
-
-    <button id="start-button">診断開始</button>
 
     <script src="/javascripts/pose_direction.js"></script>
     <script>

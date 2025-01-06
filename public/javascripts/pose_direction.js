@@ -1,3 +1,7 @@
+let keypoints_stand;
+let keypoints_fly;
+let keypoints_land;
+
 
 function drawKeypoints(ctx, keypoints) {
     const keypointInd = poseDetection.util.getKeypointIndexBySide(poseDetection.SupportedModels.MoveNet);
@@ -40,6 +44,23 @@ function drawSkeleton(ctx, keypoints) {
     });
 }
 
+function CalcFootPosition(keypoints_stand , keypoints_fly) {
+    const foot_stand = keypoints_stand[15];
+    const foot_fly = keypoints_fly[15];
+    return foot_stand.x - foot_fly.x;
+}
+
+function CalcKneePosition(keypoints_stand , keypoints_fly) {
+  const knee_stand = keypoints_stand[13];
+  const knee_fly = keypoints_fly[13];
+  const knee_position = knee_stand.x - knee_fly.x;
+  if (knee_position > 0) {
+    return Math.floor(knee_position) + "cm　膝が前に抜けています";
+  } else {
+    return Math.floor(knee_position) + "cm　⚪︎";
+  }
+}
+
 function CalcKneeAngle(keypoints) {
     const hip = keypoints[11];
     const knee = keypoints[13];
@@ -70,12 +91,89 @@ function CalcBodyAngle(keypoints) {
   const hip = keypoints[11];
   const knee = keypoints[13];
   
-  if (60 <= CalcAngle(shoulder, hip, knee) <= 100) {
-    return CalcAngle(shoulder, hip, knee) + "度　⚪︎";
-} else if (CalcAngle(shoulder, hip, knee) < 60) {
-    return CalcAngle(shoulder, hip, knee) + "度　体を前に倒しすぎです";
-  } else if (CalcAngle(shoulder, hip, knee) > 100) {
-    return CalcAngle(shoulder, hip, knee) + "度　体を後ろに倒しすぎです";
+  const angle = CalcAngle(shoulder, hip, knee);
+
+  if (60 <= angle && angle <= 100) {
+    return angle + "度　⚪︎";
+  } else if (angle < 60) {
+    return angle + "度　体を前に倒しすぎです";
+  } else if (angle > 100) {
+    return angle + "度　体を後ろに倒しすぎです";
+  }
+}
+
+function BodyDistortion(keypoints) {
+  const shoulderDistortion = Math.abs(keypoints[5].y - keypoints[6].y);
+  const elbowDistortion = Math.abs(keypoints[7].y - keypoints[8].y);
+  const wristDistortion = Math.abs(keypoints[9].y - keypoints[10].y);
+  const hipDistortion = Math.abs(keypoints[11].y - keypoints[12].y);
+  const kneeDistortion = Math.abs(keypoints[13].y - keypoints[14].y);
+  const ankleDistortion = Math.abs(keypoints[15].y - keypoints[16].y);
+
+  let result = "";
+
+  if (shoulderDistortion > 15) {
+    result += "肩が歪んでいます\n";
+  } else {
+    result += "肩: ⚪︎\n";
+  }
+
+  if (elbowDistortion > 15) {
+    result += "肘が歪んでいます\n";
+  } else {
+    result += "肘: ⚪︎\n";
+  }
+
+  if (wristDistortion > 15) {
+    result += "手首が歪んでいます\n";
+  } else {
+    result += "手首: ⚪︎\n";
+  }
+
+  if (hipDistortion > 15) {
+    result += "腰が歪んでいます\n";
+  } else {
+    result += "腰: ⚪︎\n";
+  }
+
+  if (kneeDistortion > 15) {
+    result += "膝が歪んでいます\n";
+  } else {
+    result += "膝: ⚪︎\n";
+  }
+
+  if (ankleDistortion > 15) {
+    result += "足首が歪んでいます\n";
+  } else {
+    result += "足首: ⚪︎\n";
+  }
+
+  console.log(wristDistortion);
+  console.log(elbowDistortion); 
+  return result.trim(); // 結果を返す
+}
+
+function CalcHipHeight(keypoint_stand, keypoint_fly) {
+  const ankle_stand = keypoint_stand[15];
+  const hip_stand = keypoint_stand[11];
+  const hip_fly = keypoint_fly[11];
+  const hip_height = ankle_stand.y - hip_fly.y;
+  const hip_positon = hip_fly.x - hip_stand.x;
+  
+  console.log("腰の高さ" + hip_height);
+  console.log("腰の体重移動" + hip_positon);
+  return hip_height ;
+}
+
+function isArmVectorDownward(keypoints) {
+  const shoulder = keypoints[5]; // 肩のキーポイント
+  const wrist = keypoints[9];    // 手首のキーポイント
+
+  // 手首のy座標が肩のy座標より大きい場合、ベクトルは下向き
+  if (wrist.y > shoulder.y) {
+    return "⚪︎";
+  } else {
+    return "腕の振りが遅いです";
   }
 }
 
@@ -138,41 +236,50 @@ function startPoseDetection() {
   poseDetection.createDetector(poseDetection.SupportedModels.MoveNet).then(detector => {
  
     detector.estimatePoses(imageElement_stand).then(poses => {
-        console.log(poses[0].keypoints);
-       
+      
+        keypoints_stand = poses[0].keypoints;
+        console.log(keypoints_stand); //
         document.getElementById('knee-stand-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
-        document.getElementById('body-stand-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
+        document.getElementById('upper-body-stand-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
+        document.getElementById('body-stand-score').innerHTML = BodyDistortion(keypoints_stand);
         drawKeypoints(ctx_stand, poses[0].keypoints);
         drawSkeleton(ctx_stand, poses[0].keypoints);
+        
     });
   });
 
   poseDetection.createDetector(poseDetection.SupportedModels.MoveNet).then(detector => {
 
     detector.estimatePoses(imageElement_fly).then(poses => {
-      console.log(poses[0].keypoints);
-
+      keypoints_fly = poses[0].keypoints;
+      console.log(keypoints_fly); //
+      console.log(CalcFootPosition(keypoints_stand, keypoints_fly));
+      console.log(BodyDistortion(keypoints_fly));
 
       drawKeypoints(ctx_fly, poses[0].keypoints);
       drawSkeleton(ctx_fly, poses[0].keypoints);
-      document.getElementById('foot-fly-score').innerHTML = "足";
-      document.getElementById('knee-spread-fly-score').innerHTML = "膝";
+      document.getElementById('foot-fly-score').innerHTML = CalcFootPosition(keypoints_stand, keypoints_fly);
+      document.getElementById('knee-spread-fly-score').innerHTML = CalcKneePosition(keypoints_stand, keypoints_fly);
       document.getElementById('knee-bend-fly-score').innerHTML = CalcKneeBendAngle(poses[0].keypoints);
-      document.getElementById('body-fly-score').innerHTML = "体";
+      document.getElementById('body-fly-score').innerHTML = BodyDistortion(keypoints_fly);
       document.getElementById('hip-height-fly-score').innerHTML = "腰";
-      document.getElementById('arm-swing-fly-score').innerHTML = "腕";
+      document.getElementById('arm-swing-fly-score').innerHTML = isArmVectorDownward(poses[0].keypoints);
+      document.getElementById('hip-height-fly-score').innerHTML = CalcHipHeight(keypoints_stand, keypoints_fly);
     });
   });
 
   poseDetection.createDetector(poseDetection.SupportedModels.MoveNet).then(detector => {
 
     detector.estimatePoses(imageElement_land).then(poses => {
-      console.log(poses[0].keypoints);
+      keypoints_land = poses[0].keypoints;
+      console.log(keypoints_land); //
 
       document.getElementById('knee-bend-land-score').innerHTML = CalcKneeBendAngle(poses[0].keypoints);
       document.getElementById('body-land-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
+      document.getElementById('body-land-score').innerHTML = BodyDistortion(keypoints_land);
       drawKeypoints(ctx_land, poses[0].keypoints);
       drawSkeleton(ctx_land, poses[0].keypoints);
     });
   });
+
 }
