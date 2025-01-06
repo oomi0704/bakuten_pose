@@ -2,7 +2,9 @@
 
 <%= render 'name', user: @user %>
 
+<%= render 'pose/pose_button' %>
 <%= render 'pose/pose_direction' %>
+<%= render 'pose/pose_score' %>
 
 <div>
   <%= link_to "Edit this user", edit_user_path(@user) %> |
@@ -10,3 +12,4 @@
 
   <%= button_to "Destroy this user", @user, method: :delete %>
 </div>
+
