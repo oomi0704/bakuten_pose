@@ -18,7 +18,7 @@ class FlyImageUploader < CarrierWave::Uploader::Base
   end
 
   def default_url
-    'fly.jpeg'
+    'fly.png'
   end
 
 

@@ -1,6 +1,8 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>バク転診断</h1>
+<%= link_to "新しく診断する", new_user_path %>
+
 
 <div id="users">
   <% @users.each do |user| %>
@@ -11,4 +13,3 @@
   <% end %>
 </div>
 
-<%= link_to "新しく診断する", new_user_path %>

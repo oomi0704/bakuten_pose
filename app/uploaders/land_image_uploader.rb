@@ -18,7 +18,7 @@ class LandImageUploader < CarrierWave::Uploader::Base
   end
 
   def default_url
-    'land.jpeg'
+    'land.png'
   end
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url(*args)
