@@ -18,7 +18,7 @@
         <%= image_tag 'stand.jpeg', id: 'img_stand', width: '500px', alt: 'Stand Image', crossorigin: 'anonymous' %>
       <% end %>
       <canvas id="canvas_stand" ></canvas> 
-      <%= render 'pose/pose_direction' %>
+      <%= render 'pose/pose_stand' %>
     </div>
 
      <div id="container">
@@ -28,6 +28,7 @@
         <%= image_tag 'fly.jpeg', id: 'img_fly', width: '500px', alt: 'Fly Image', crossorigin: 'anonymous' %>
       <% end %>
       <canvas id="canvas_fly" ></canvas> 
+      <%= render 'pose/pose_fly' %>
     </div>
 
     <div id="container">
@@ -37,6 +38,7 @@
         <%= image_tag 'land.jpeg', id: 'img_land', width: '500px', alt: 'Land Image', crossorigin: 'anonymous' %>
       <% end %>
       <canvas id="canvas_land" ></canvas> 
+      <%= render 'pose/pose_land' %>
     </div>
 
     <button id="start-button">診断開始</button>

@@ -47,12 +47,7 @@
       <%= form.label :land_image, "着手画像(手に体重が乗った瞬間の画像)　　　　　", style: "display: block" %>
       <%= form.file_field :land_image, class: "form-control", accept: 'image/*' %>
     </div>
-    
-      <% if @user.land_image.present? %>
-        <%= image_tag @user.land_image.url, id: 'img_land', width: '100px', alt: 'Land Image', crossorigin: 'anonymous' %>
-      <% else %>
-        <%= image_tag 'land.jpeg', id: 'img_land', width: '100px', alt: 'Land Image', crossorigin: 'anonymous' %>
-      <% end %>
+    <%= image_tag 'land.jpeg', alt: '着手画像サンプル', style: 'width: 100px; height: auto; margin-left: 10px;' %>
   </div>
 
   <div>

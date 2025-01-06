@@ -1,18 +1,3 @@
-const imageElement_stand = document.getElementById('img_stand');
-const canvas_stand = document.getElementById('canvas_stand');
-const ctx_stand = canvas_stand.getContext('2d');
-
-const imageElement_fly = document.getElementById('img_fly');
-const canvas_fly = document.getElementById('canvas_fly');
-const ctx_fly = canvas_fly.getContext('2d');
-
-const imageElement_land = document.getElementById('img_land');
-const canvas_land = document.getElementById('canvas_land');
-const ctx_land = canvas_land.getContext('2d');
-
-ctx_stand.drawImage(imageElement_stand, 0, 0, canvas_stand.width, canvas_stand.height);
-ctx_fly.drawImage(imageElement_fly, 0, 0, canvas_fly.width, canvas_fly.height);
-ctx_land.drawImage(imageElement_land, 0, 0, canvas_land.width, canvas_land.height);
 
 function drawKeypoints(ctx, keypoints) {
     const keypointInd = poseDetection.util.getKeypointIndexBySide(poseDetection.SupportedModels.MoveNet);
@@ -60,13 +45,18 @@ function CalcKneeAngle(keypoints) {
     const knee = keypoints[13];
     const ankle = keypoints[15];
   
-    return CalcAngle(hip, knee, ankle);
+    if (CalcAngle(hip, knee, ankle) <= 90) {
+        return "しゃがみすぎ" + CalcAngle(hip, knee, ankle);
+    } else {
+        return CalcAngle(hip, knee, ankle);
+    }
 }
 
 function CalcBodyAngle(keypoints) {
   const shoulder = keypoints[5];
   const hip = keypoints[11];
   const knee = keypoints[13];
+  
   
   return CalcAngle(shoulder, hip, knee);
 }
@@ -130,12 +120,10 @@ function startPoseDetection() {
   poseDetection.createDetector(poseDetection.SupportedModels.MoveNet).then(detector => {
  
     detector.estimatePoses(imageElement_stand).then(poses => {
-      console.log(poses[0].keypoints);
-      console.log(CalcKneeAngle(poses[0].keypoints));
-
+        console.log(poses[0].keypoints);
        
-        document.getElementById('knee-angle-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
-        document.getElementById('body-angle-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
+        document.getElementById('knee-stand-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
+        document.getElementById('body-stand-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
         drawKeypoints(ctx_stand, poses[0].keypoints);
         drawSkeleton(ctx_stand, poses[0].keypoints);
     });
@@ -145,6 +133,9 @@ function startPoseDetection() {
 
     detector.estimatePoses(imageElement_fly).then(poses => {
       console.log(poses[0].keypoints);
+
+      document.getElementById('knee-fly-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
+      document.getElementById('body-fly-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
       drawKeypoints(ctx_fly, poses[0].keypoints);
       drawSkeleton(ctx_fly, poses[0].keypoints);
     });
@@ -154,6 +145,9 @@ function startPoseDetection() {
 
     detector.estimatePoses(imageElement_land).then(poses => {
       console.log(poses[0].keypoints);
+
+      document.getElementById('knee-land-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
+      document.getElementById('body-land-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
       drawKeypoints(ctx_land, poses[0].keypoints);
       drawSkeleton(ctx_land, poses[0].keypoints);
     });
