@@ -47,17 +47,22 @@ function drawSkeleton(ctx, keypoints) {
 function CalcFootPosition(keypoints_stand , keypoints_fly) {
     const foot_stand = keypoints_stand[15];
     const foot_fly = keypoints_fly[15];
-    return foot_stand.x - foot_fly.x;
+    const foot_position = foot_stand.x - foot_fly.x;
+    if (foot_position < 0) {
+      return  "飛ぶ前に前に動いています";
+    } else {
+      return  "⚪︎";
+    }
 }
 
 function CalcKneePosition(keypoints_stand , keypoints_fly) {
   const knee_stand = keypoints_stand[13];
   const knee_fly = keypoints_fly[13];
-  const knee_position = knee_stand.x - knee_fly.x;
-  if (knee_position > 0) {
-    return Math.floor(knee_position) + "cm　膝が前に抜けています";
+  const knee_position = knee_fly.x - knee_stand.x;
+  if (knee_position < 0) {
+    return  "膝が前に抜けています";
   } else {
-    return Math.floor(knee_position) + "cm　⚪︎";
+    return "⚪︎";
   }
 }
 
@@ -67,9 +72,9 @@ function CalcKneeAngle(keypoints) {
     const ankle = keypoints[15];
   
     if (CalcAngle(hip, knee, ankle) <= 50) {
-        return CalcAngle(hip, knee, ankle) + "度　しゃがみすぎです";
+        return CalcAngle(hip, knee, ankle) + "しゃがみすぎです";
     } else {
-        return CalcAngle(hip, knee, ankle) + "度　⚪︎";
+        return CalcAngle(hip, knee, ankle) + "度⚪︎";
     }
 }
 
@@ -80,9 +85,9 @@ function CalcKneeBendAngle(keypoints) {
   const ankle = keypoints[15];
 
   if (CalcAngle(hip, knee, ankle) < 140) {
-      return CalcAngle(hip, knee, ankle) + "度　膝が曲がっています";
+      return CalcAngle(hip, knee, ankle) + "膝が曲がっています";
   } else {
-      return CalcAngle(hip, knee, ankle) + "度　⚪︎";
+      return CalcAngle(hip, knee, ankle) + "度⚪︎";
   }
 }
 
@@ -94,7 +99,7 @@ function CalcBodyAngle(keypoints) {
   const angle = CalcAngle(shoulder, hip, knee);
 
   if (60 <= angle && angle <= 100) {
-    return angle + "度　⚪︎";
+    return angle + "度⚪︎";
   } else if (angle < 60) {
     return angle + "度　体を前に倒しすぎです";
   } else if (angle > 100) {
@@ -103,53 +108,58 @@ function CalcBodyAngle(keypoints) {
 }
 
 function BodyDistortion(keypoints) {
-  const shoulderDistortion = Math.abs(keypoints[5].y - keypoints[6].y);
-  const elbowDistortion = Math.abs(keypoints[7].y - keypoints[8].y);
-  const wristDistortion = Math.abs(keypoints[9].y - keypoints[10].y);
-  const hipDistortion = Math.abs(keypoints[11].y - keypoints[12].y);
-  const kneeDistortion = Math.abs(keypoints[13].y - keypoints[14].y);
-  const ankleDistortion = Math.abs(keypoints[15].y - keypoints[16].y);
+  const shoulderDistortionY = Math.abs(keypoints[5].y - keypoints[6].y);
+  const elbowDistortionY = Math.abs(keypoints[7].y - keypoints[8].y);
+  const wristDistortionY = Math.abs(keypoints[9].y - keypoints[10].y);
+  const hipDistortionY = Math.abs(keypoints[11].y - keypoints[12].y);
+  const kneeDistortionY = Math.abs(keypoints[13].y - keypoints[14].y);
+  const ankleDistortionY = Math.abs(keypoints[15].y - keypoints[16].y);
+
+  const shoulderDistortionX = Math.abs(keypoints[5].x - keypoints[6].x);
+  const elbowDistortionX = Math.abs(keypoints[7].x - keypoints[8].x);
+  const wristDistortionX = Math.abs(keypoints[9].x - keypoints[10].x);
+  const hipDistortionX = Math.abs(keypoints[11].x - keypoints[12].x);
+  const kneeDistortionX = Math.abs(keypoints[13].x - keypoints[14].x);
+  const ankleDistortionX = Math.abs(keypoints[15].x - keypoints[16].x);
 
   let result = "";
 
-  if (shoulderDistortion > 15) {
+  if (shoulderDistortionY > 10 && shoulderDistortionX > 10) {
     result += "肩が歪んでいます\n";
   } else {
     result += "肩: ⚪︎\n";
   }
 
-  if (elbowDistortion > 15) {
+  if (elbowDistortionY > 10 && elbowDistortionX > 10) {
     result += "肘が歪んでいます\n";
   } else {
     result += "肘: ⚪︎\n";
   }
 
-  if (wristDistortion > 15) {
+  if (wristDistortionY > 10 && wristDistortionX > 10) {
     result += "手首が歪んでいます\n";
   } else {
     result += "手首: ⚪︎\n";
   }
 
-  if (hipDistortion > 15) {
+  if (hipDistortionY > 10 && hipDistortionX > 10) {
     result += "腰が歪んでいます\n";
   } else {
     result += "腰: ⚪︎\n";
   }
 
-  if (kneeDistortion > 15) {
+  if (kneeDistortionY > 10 && kneeDistortionX > 10) {
     result += "膝が歪んでいます\n";
   } else {
     result += "膝: ⚪︎\n";
   }
 
-  if (ankleDistortion > 15) {
+  if (ankleDistortionY > 10 && ankleDistortionX > 10) {
     result += "足首が歪んでいます\n";
   } else {
     result += "足首: ⚪︎\n";
   }
 
-  console.log(wristDistortion);
-  console.log(elbowDistortion); 
   return result.trim(); // 結果を返す
 }
 
@@ -160,9 +170,22 @@ function CalcHipHeight(keypoint_stand, keypoint_fly) {
   const hip_height = ankle_stand.y - hip_fly.y;
   const hip_positon = hip_fly.x - hip_stand.x;
   
-  console.log("腰の高さ" + hip_height);
-  console.log("腰の体重移動" + hip_positon);
-  return hip_height ;
+
+  let result = "";
+
+  if (hip_height > 100) {
+    result += "腰の高さ: ⚪︎\n";
+  } else {
+    result += "腰の高さが低いです\n";
+  }
+
+  if (hip_positon > 0) {
+    result += "腰の体重移動: ⚪︎\n";
+  } else {
+    result += "真上に飛びすぎです\n";
+  }
+
+  return result.trim(); // 結果を返す
 }
 
 function isArmVectorDownward(keypoints) {
@@ -176,6 +199,31 @@ function isArmVectorDownward(keypoints) {
     return "腕の振りが遅いです";
   }
 }
+
+function CalcTouchPosition(keypoints_land) {
+  const shoulder_land = keypoints_land[5];
+  const hip_land = keypoints_land[11];
+  const touch_position = shoulder_land.x - hip_land.x;
+  console.log(touch_position);
+
+  if (touch_position >= -10 && touch_position <= 10) {
+    return  "⚪︎";
+  } else {
+    return  " 着手時に肩と腰が一直線上になっていません";
+  }
+}
+
+function CalcEyePosition(keypoints_land) {
+  const eye_land = keypoints_land[1];
+  const shoulder_land = keypoints_land[5];
+  const touch_position = eye_land.x - shoulder_land.x;
+
+  if (touch_position < 0) {
+    return "⚪︎";
+  } else {
+    return "顎を上げるまたは、手と手の間を見ましょう";
+  }
+} 
 
 function CalcAngle(start, mid, end) {
     // ベクトルの計算
@@ -252,10 +300,7 @@ function startPoseDetection() {
 
     detector.estimatePoses(imageElement_fly).then(poses => {
       keypoints_fly = poses[0].keypoints;
-      console.log(keypoints_fly); //
-      console.log(CalcFootPosition(keypoints_stand, keypoints_fly));
-      console.log(BodyDistortion(keypoints_fly));
-
+    
       drawKeypoints(ctx_fly, poses[0].keypoints);
       drawSkeleton(ctx_fly, poses[0].keypoints);
       document.getElementById('foot-fly-score').innerHTML = CalcFootPosition(keypoints_stand, keypoints_fly);
@@ -272,11 +317,12 @@ function startPoseDetection() {
 
     detector.estimatePoses(imageElement_land).then(poses => {
       keypoints_land = poses[0].keypoints;
-      console.log(keypoints_land); //
 
       document.getElementById('knee-bend-land-score').innerHTML = CalcKneeBendAngle(poses[0].keypoints);
       document.getElementById('body-land-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
       document.getElementById('body-land-score').innerHTML = BodyDistortion(keypoints_land);
+      document.getElementById('touch-land-score').innerHTML = CalcTouchPosition(poses[0].keypoints);
+      document.getElementById('eye-land-score').innerHTML = CalcEyePosition(poses[0].keypoints);
       drawKeypoints(ctx_land, poses[0].keypoints);
       drawSkeleton(ctx_land, poses[0].keypoints);
     });
