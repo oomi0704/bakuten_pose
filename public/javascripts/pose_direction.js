@@ -108,7 +108,7 @@ function startPoseDetection() {
         document.getElementById(item + '-x').innerHTML = Math.floor(keypoint.x);
         document.getElementById(item + '-y').innerHTML = Math.floor(keypoint.y);
         document.getElementById('knee-angle-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
-
+        document.getElementById('body-angle-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
         drawKeypoints(ctx, poses[0].keypoints);
         drawSkeleton(ctx, poses[0].keypoints);
       });
