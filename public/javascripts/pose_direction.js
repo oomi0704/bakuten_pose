@@ -1,10 +1,20 @@
-const keypointIds = ['nose', 'left-eye', 'right-eye', 'left-ear', 'right-ear',
-    'left-shoulder', 'right-shoulder', 'left-elbow', 'right-elbow',
-    'left-wrist', 'right-wirst', 'left-hip', 'right-hip',
-   'left-knee', 'right-knee', 'left-ankle', 'right-ankle']
-    
+const imageElement_stand = document.getElementById('img_stand');
+const canvas_stand = document.getElementById('canvas_stand');
+const ctx_stand = canvas_stand.getContext('2d');
 
-   function drawKeypoints(ctx, keypoints) {
+const imageElement_fly = document.getElementById('img_fly');
+const canvas_fly = document.getElementById('canvas_fly');
+const ctx_fly = canvas_fly.getContext('2d');
+
+const imageElement_land = document.getElementById('img_land');
+const canvas_land = document.getElementById('canvas_land');
+const ctx_land = canvas_land.getContext('2d');
+
+ctx_stand.drawImage(imageElement_stand, 0, 0, canvas_stand.width, canvas_stand.height);
+ctx_fly.drawImage(imageElement_fly, 0, 0, canvas_fly.width, canvas_fly.height);
+ctx_land.drawImage(imageElement_land, 0, 0, canvas_land.width, canvas_land.height);
+
+function drawKeypoints(ctx, keypoints) {
     const keypointInd = poseDetection.util.getKeypointIndexBySide(poseDetection.SupportedModels.MoveNet);
     ctx.fillStyle = 'Red';
     ctx.strokeStyle = 'White';
@@ -86,32 +96,66 @@ function CalcAngle(start, mid, end) {
 }
 
 function startPoseDetection() {
-  const imageElement = document.getElementById('img');
-  const canvas = document.getElementById('canvas');
+  const imageElement_stand = document.getElementById('img_stand');
+  const canvas_stand = document.getElementById('canvas_stand');
+  const ctx_stand = canvas_stand.getContext('2d');
 
-  const ctx = canvas.getContext('2d');
+  const imageElement_fly = document.getElementById('img_fly');
+  const canvas_fly = document.getElementById('canvas_fly');
+  const ctx_fly = canvas_fly.getContext('2d');
 
-  canvas.width = imageElement.clientWidth;
-  canvas.height = imageElement.clientHeight;
+  const imageElement_land = document.getElementById('img_land');
+  const canvas_land = document.getElementById('canvas_land');
+  const ctx_land = canvas_land.getContext('2d');
 
-  ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+
+  canvas_stand.width = imageElement_stand.clientWidth;
+  canvas_stand.height = imageElement_stand.clientHeight;
+
+  canvas_fly.width = imageElement_fly.clientWidth;
+  canvas_fly.height = imageElement_fly.clientHeight;
+
+  canvas_land.width = imageElement_land.clientWidth;
+  canvas_land.height = imageElement_land.clientHeight;
+
+  ctx_stand.drawImage(imageElement_stand, 0, 0, canvas_stand.width, canvas_stand.height);
+  ctx_fly.drawImage(imageElement_fly, 0, 0, canvas_fly.width, canvas_fly.height);
+  ctx_land.drawImage(imageElement_land, 0, 0, canvas_land.width, canvas_land.height);
+
+
+
+
+
 
   poseDetection.createDetector(poseDetection.SupportedModels.MoveNet).then(detector => {
-    detector.estimatePoses(imageElement).then(poses => {
+ 
+    detector.estimatePoses(imageElement_stand).then(poses => {
       console.log(poses[0].keypoints);
       console.log(CalcKneeAngle(poses[0].keypoints));
 
-      keypointIds.forEach(function(item, index) {
-        const keypoint = poses[0].keypoints[index];
-
-        document.getElementById(item + '-score').innerHTML = Math.floor(keypoint.score * 100);
-        document.getElementById(item + '-x').innerHTML = Math.floor(keypoint.x);
-        document.getElementById(item + '-y').innerHTML = Math.floor(keypoint.y);
+       
         document.getElementById('knee-angle-score').innerHTML = CalcKneeAngle(poses[0].keypoints);
         document.getElementById('body-angle-score').innerHTML = CalcBodyAngle(poses[0].keypoints);
-        drawKeypoints(ctx, poses[0].keypoints);
-        drawSkeleton(ctx, poses[0].keypoints);
-      });
+        drawKeypoints(ctx_stand, poses[0].keypoints);
+        drawSkeleton(ctx_stand, poses[0].keypoints);
+    });
+  });
+
+  poseDetection.createDetector(poseDetection.SupportedModels.MoveNet).then(detector => {
+
+    detector.estimatePoses(imageElement_fly).then(poses => {
+      console.log(poses[0].keypoints);
+      drawKeypoints(ctx_fly, poses[0].keypoints);
+      drawSkeleton(ctx_fly, poses[0].keypoints);
+    });
+  });
+
+  poseDetection.createDetector(poseDetection.SupportedModels.MoveNet).then(detector => {
+
+    detector.estimatePoses(imageElement_land).then(poses => {
+      console.log(poses[0].keypoints);
+      drawKeypoints(ctx_land, poses[0].keypoints);
+      drawSkeleton(ctx_land, poses[0].keypoints);
     });
   });
 }
