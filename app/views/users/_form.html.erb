@@ -15,7 +15,11 @@
     <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>
     <%= form.file_field :stand_image, class: "form-control", accept: 'image/*' %>
+    <%= form.file_field :fly_image, class: "form-control", accept: 'image/*' %>
+    <%= form.file_field :land_image, class: "form-control", accept: 'image/*' %>
     <%= form.hidden_field :stand_image_cache %>
+    <%= form.hidden_field :fly_image_cache %>
+    <%= form.hidden_field :land_image_cache %>
   </div>
 
   <div>
