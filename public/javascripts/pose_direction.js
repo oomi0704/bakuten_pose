@@ -46,33 +46,43 @@ function drawSkeleton(ctx, keypoints) {
 }
 
 function CalcKneeAngle(keypoints) {
-   const hip = keypoints[11];
-   const knee = keypoints[13];
-   const ankle = keypoints[15];
-   
-   console.log(hip, knee, ankle);
+    const hip = keypoints[11];
+    const knee = keypoints[13];
+    const ankle = keypoints[15];
+  
+    return CalcAngle(hip, knee, ankle);
+}
 
-   // ベクトルの計算
-   const vector1 = { x: hip.x - knee.x, y: hip.y - knee.y };
-   const vector2 = { x: ankle.x - knee.x, y: ankle.y - knee.y };
+function CalcBodyAngle(keypoints) {
+  const shoulder = keypoints[5];
+  const hip = keypoints[11];
+  const knee = keypoints[13];
+  
+  return CalcAngle(shoulder, hip, knee);
+}
 
-   // 内積の計算
-   const dotProduct = vector1.x * vector2.x + vector1.y * vector2.y;
+function CalcAngle(start, mid, end) {
+    // ベクトルの計算
+    const vector1 = { x: start.x - mid.x, y: start.y - mid.y };
+    const vector2 = { x: end.x - mid.x, y: end.y - mid.y };
 
-   // ベクトルの大きさの計算
-   const magnitude1 = Math.sqrt(vector1.x ** 2 + vector1.y ** 2);
-   const magnitude2 = Math.sqrt(vector2.x ** 2 + vector2.y ** 2);
+    // 内積の計算
+    const dotProduct = vector1.x * vector2.x + vector1.y * vector2.y;
 
-   // コサインθの計算
-   const cosTheta = dotProduct / (magnitude1 * magnitude2);
+    // ベクトルの大きさの計算
+    const magnitude1 = Math.sqrt(vector1.x ** 2 + vector1.y ** 2);
+    const magnitude2 = Math.sqrt(vector2.x ** 2 + vector2.y ** 2);
 
-   // 角度θをラジアンで計算
-   const angleRadians = Math.acos(cosTheta);
+    // コサインθの計算
+    const cosTheta = dotProduct / (magnitude1 * magnitude2);
 
-   // ラジアンを度に変換
-   const angleDegrees = angleRadians * (180 / Math.PI);
+    // 角度θをラジアンで計算
+    const angleRadians = Math.acos(cosTheta);
 
-   return Math.floor(angleDegrees);
+    // ラジアンを度に変換
+    const angleDegrees = angleRadians * (180 / Math.PI);
+
+    return Math.floor(angleDegrees);
 }
 
 function startPoseDetection() {

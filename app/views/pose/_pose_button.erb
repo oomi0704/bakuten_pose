@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>pose detection</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+    <script src="/javascripts/pose_direction.js"></script>
+    <meta charset="UTF-8">
+  </head>
+  
+  <body>
+    <div id="container">
+    
+      <% if @user.stand_image.present? %>
+        <%= image_tag @user.stand_image.url, id: 'img', width: '500px', alt: 'Stand Image', crossorigin: 'anonymous' %>
+      <% else %>
+        <%= image_tag 'stand.jpeg', id: 'img', width: '500px', alt: 'Stand Image', crossorigin: 'anonymous' %>
+      <% end %>
+      <canvas id="canvas" ></canvas> 
+    </div>
+
+    <button id="start-button">診断開始</button>
+
+    <script src="/javascripts/pose_direction.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const startButton = document.getElementById('start-button');
+        if (startButton) {
+          startButton.addEventListener('click', function() {
+            startPoseDetection(); // pose_direction.js内の関数を呼び出す
+          });
+        }
+      });
+    </script>
+
+  </body>
+</html>
