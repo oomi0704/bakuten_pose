@@ -28,6 +28,8 @@ gem "jbuilder"
 
 gem 'carrierwave', '2.2.2'
 
+gem 'fog-aws'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
