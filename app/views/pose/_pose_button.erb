@@ -47,7 +47,7 @@
 
      <div id="container">
       <% if @user.fly_image.present? %>
-        <%= image_tag @user.fly_image.url, id: 'img_fly', width: '500px', alt: 'Fly Image', crossorigin: 'anonymous' %>
+        <%= image_tag @user.fly_image.url, id: 'img_fly', width: '100px', alt: 'Fly Image', crossorigin: 'anonymous' %>
       <% else %>
         <%= image_tag 'fly.png', id: 'img_fly', width: '500px', alt: 'Fly Image', crossorigin: 'anonymous' %>
       <% end %>
