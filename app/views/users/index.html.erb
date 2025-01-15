@@ -1,44 +1,17 @@
-<p style="color: green"><%= notice %></p>
+<p class="text-green-500"><%= notice %></p>
 
-<h1>バク転診断</h1>
-<%= link_to "新しくバク転写真を追加する", new_user_path, class: "button-link button-link-orange" %>
+<h1 class="text-4xl font-extrabold text-black-600 p-4">バク転診断</h1>
 
-<style>
-  .button-link {
-    display: inline-block; /* インラインブロックにしてボタンのように表示 */
-    color: white; /* テキストの色を白に */
-    text-decoration: none; /* 下線をなくす */
-    border-radius: 5px; /* 角を丸くする */
-    font-size: 16px; /* フォントサイズを設定 */
-    padding: 10px 20px; /* パディングを追加 */
-    cursor: pointer; /* カーソルをポインターに */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
-    transition: background-color 0.3s ease; /* 背景色の変化にトランジションを追加 */
-  }
+<p class="text-orange-500"><%= link_to "新しくバク転写真を追加する", new_user_path, class: "bg-orange-500 text-white py-2 px-4 rounded mt-4" %></p>
 
-  .button-link-blue {
-    background-color: #3498db; /* 青色 */
-  }
-
-  .button-link-blue:hover {
-    background-color: #2980b9; /* ホバー時の青色 */
-  }
-
-  .button-link-orange {
-    background-color: #e67e22; /* オレンジ色 */
-  }
-
-  .button-link-orange:hover {
-    background-color: #d35400; /* ホバー時のオレンジ色 */
-  }
-</style>
-
-<div id="users">
+<div id="users" class="mt-4">
   <% @users.each do |user| %>
-    <%= render user %>
-    <p>
-      <%= link_to "⬆️写真を診断する", user, class: "button-link button-link-blue" %>
-    </p>
+    <div class="mb-4">
+      <%= render user %>
+      <p>
+        <%= link_to "⬆️写真を診断する", user, class: "bg-blue-500 text-white py-2 px-4 rounded" %>
+      </p>
+    </div>
   <% end %>
 </div>
 

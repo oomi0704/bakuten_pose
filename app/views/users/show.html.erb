@@ -1,53 +1,13 @@
-<p style="color: green"><%= notice %></p>
+<p class="text-green-500"><%= notice %></p>
 
 <%= render 'name', user: @user %>
 <%= render 'pose/pose_button' %>
 
+<div class="mt-5"></div>
 
 <div>
-  <%= link_to "名前、写真編集", edit_user_path(@user), class: "button-link button-link-blue" %> |
-  <%= link_to "診断一覧へ", users_path, class: "button-link button-link-blue" %>
+  <%= link_to "名前、写真編集", edit_user_path(@user), class: "bg-blue-500 text-white py-2 px-4 rounded mr-2 mt-5" %> |
+  <%= link_to "診断一覧へ", users_path, class: "bg-blue-500 text-white py-2 px-4 rounded mr-2 mt-5" %>
 
-  <div style="margin-top: 10px;"></div>
-
-  <%= button_to "診断を消去", @user, method: :delete, class: "delete-button" %>
+  <%= button_to "診断を消去", @user, method: :delete, class: "bg-red-500 text-white py-2 px-4 rounded mt-4" %>
 </div>
-
-<style>
-  .button-link {
-    display: inline-block; /* インラインブロックにしてボタンのように表示 */
-    color: white; /* テキストの色を白に */
-    text-decoration: none; /* 下線をなくす */
-    border-radius: 5px; /* 角を丸くする */
-    font-size: 16px; /* フォントサイズを設定 */
-    padding: 10px 20px; /* パディングを追加 */
-    cursor: pointer; /* カーソルをポインターに */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
-    transition: background-color 0.3s ease; /* 背景色の変化にトランジションを追加 */
-  }
-
-  .button-link-blue {
-    background-color: #3498db; /* 青色 */
-  }
-
-  .button-link-blue:hover {
-    background-color: #2980b9; /* ホバー時の青色 */
-  }
-
-  .delete-button {
-    background-color: #7f8c8d; /* グレー色 */
-    color: white; /* テキストの色を白に */
-    border: none; /* ボーダーをなくす */
-    border-radius: 5px; /* 角を丸くする */
-    font-size: 16px; /* フォントサイズを設定 */
-    padding: 10px 20px; /* パディングを追加 */
-    cursor: pointer; /* カーソルをポインターに */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
-    transition: background-color 0.3s ease; /* 背景色の変化にトランジションを追加 */
-  }
-
-  .delete-button:hover {
-    background-color: #95a5a6; /* ホバー時のグレー色 */
-  }
-</style>
-
