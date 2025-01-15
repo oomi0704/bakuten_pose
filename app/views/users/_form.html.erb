@@ -11,47 +11,53 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, "名前", style: "display: block" %>
-    <%= form.text_field :name, class: "form-control", placeholder: "名前を入力してください" %>
+  <div class="mb-4">
+    <%= form.label :name, "名前", class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.text_field :name, class: "form-control shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "名前を入力してください" %>
   </div>
 
-  <div style="display: flex; align-items: center; margin-bottom: 10px;">
-    <div>
-      <%= form.label :stand_image, "立ち画像(左から右へいく画像を使用してください)", style: "display: block" %>
-      <%= form.file_field :stand_image, class: "form-control", accept: 'image/*' %>
+  <div class="flex items-center mb-4">
+    <div class="">
+      <%= form.label :stand_image, "立ち画像(左から右へいく画像を使用してください)", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= form.file_field :stand_image, class: "form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*' %>
     </div>
-    
+
+    <div class="ml-4">
       <% if @user.stand_image.present? %>
-        <%= image_tag @user.stand_image.url, id: 'img_stand', width: '100px', alt: 'Stand Image', crossorigin: 'anonymous' %>
+        <%= image_tag @user.stand_image.url, id: 'img_stand', class: 'w-24 h-24 object-cover', alt: 'Stand Image', crossorigin: 'anonymous' %>
       <% else %>
-        <%= image_tag 'stand.png', id: 'img_stand', width: '100px', alt: 'Stand Image', crossorigin: 'anonymous' %>
+        <%= image_tag 'stand.png', id: 'img_stand', class: 'w-24 h-24 object-cover', alt: 'Stand Image', crossorigin: 'anonymous' %>
       <% end %>
+    </div>
   </div>
 
-  <div style="display: flex; align-items: center; margin-bottom: 10px;">
-    <div>
-      <%= form.label :fly_image, "飛び出し画像(地面から足は浮いた瞬間の画像)　　", style: "display: block" %>
-      <%= form.file_field :fly_image, class: "form-control", accept: 'image/*' %>
+  <div class="flex items-center mb-4">
+    <div class="">
+      <%= form.label :fly_image, "飛び出し画像(地面から足は浮いた瞬間の画像)", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= form.file_field :fly_image, class: "form-control shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*' %>
     </div>
-    
+  
+    <div class="ml-4">
       <% if @user.fly_image.present? %>
-        <%= image_tag @user.fly_image.url, id: 'img_fly', width: '100px', alt: 'Fly Image', crossorigin: 'anonymous' %>
+        <%= image_tag @user.fly_image.url, id: 'img_fly', class: 'w-24 h-24 object-cover', alt: 'Fly Image', crossorigin: 'anonymous' %>
       <% else %>
-        <%= image_tag 'fly.png', id: 'img_fly', width: '100px', alt: 'Fly Image', crossorigin: 'anonymous' %>
+        <%= image_tag 'fly.png', id: 'img_fly', class: 'w-24 h-24 object-cover', alt: 'Fly Image', crossorigin: 'anonymous' %>
       <% end %>
+    </div>
   </div>
 
-  <div style="display: flex; align-items: center; margin-bottom: 10px;">
-    <div>
-      <%= form.label :land_image, "着手画像(手に体重が乗った瞬間の画像)　　　　　", style: "display: block" %>
-      <%= form.file_field :land_image, class: "form-control", accept: 'image/*' %>
+  <div class="flex items-center mb-4">
+    <div class="">
+      <%= form.label :land_image, "着手画像(手に体重が乗った瞬間の画像)", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= form.file_field :land_image, class: "form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*' %>
     </div>
+    <div class="ml-4">
       <% if @user.land_image.present? %>
-        <%= image_tag @user.land_image.url, id: 'img_land', width: '100px', alt: 'Land Image', crossorigin: 'anonymous' %>
+        <%= image_tag @user.land_image.url, id: 'img_land', class: 'w-24 h-24 object-cover', alt: 'Land Image', crossorigin: 'anonymous' %>
       <% else %>
-        <%= image_tag 'land.png', id: 'img_land', width: '100px', alt: 'Land Image', crossorigin: 'anonymous' %>
+        <%= image_tag 'land.png', id: 'img_land', class: 'w-24 h-24 object-cover', alt: 'Land Image', crossorigin: 'anonymous' %>
       <% end %>
+    </div>
   </div>
 
   <div>
@@ -61,6 +67,6 @@
   </div>
 
   <div>
-    <%= form.submit class: "large-submit-button" %>
+    <%= form.submit class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
   </div>
 <% end %>

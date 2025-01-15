@@ -3,7 +3,9 @@
     <strong>名前:</strong>
     <%= user.name %>
   </p>
-  <%= image_tag user.stand_image_url, class: "card-img-top", width: "300", height:"200" %>
-  <%= image_tag user.fly_image_url, class: "card-img-top", width: "300", height:"200" %>
-  <%= image_tag user.land_image_url, class: "card-img-top", width: "300", height:"200" %>
+  <div class="flex space-x-4">
+    <%= image_tag user.stand_image_url, class: "card-img-top", width: "300", height:"200" %>
+    <%= image_tag user.fly_image_url, class: "card-img-top", width: "300", height:"200" %>
+    <%= image_tag user.land_image_url, class: "card-img-top", width: "300", height:"200" %>
+  </div>
 </div>

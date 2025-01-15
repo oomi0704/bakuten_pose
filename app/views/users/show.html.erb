@@ -1,14 +1,13 @@
-<p style="color: green"><%= notice %></p>
+<p class="text-green-500"><%= notice %></p>
 
 <%= render 'name', user: @user %>
 <%= render 'pose/pose_button' %>
 
+<div class="mt-5"></div>
 
 <div>
-  <%= link_to "名前、写真編集", edit_user_path(@user), class: "button-link button-link-blue" %> |
-  <%= link_to "診断一覧へ", users_path, class: "button-link button-link-blue" %>
+  <%= link_to "名前、写真編集", edit_user_path(@user), class: "bg-blue-500 text-white py-2 px-4 rounded mr-2 mt-5" %> |
+  <%= link_to "診断一覧へ", users_path, class: "bg-blue-500 text-white py-2 px-4 rounded mr-2 mt-5" %>
 
-  <div style="margin-top: 10px;"></div>
-
-  <%= button_to "診断を消去", @user, method: :delete, class: "delete-button" %>
+  <%= button_to "診断を消去", @user, method: :delete, class: "bg-red-500 text-white py-2 px-4 rounded mt-4" %>
 </div>
