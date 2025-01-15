@@ -3,35 +3,6 @@
 <h1>バク転診断</h1>
 <%= link_to "新しくバク転写真を追加する", new_user_path, class: "button-link button-link-orange" %>
 
-<style>
-  .button-link {
-    display: inline-block; /* インラインブロックにしてボタンのように表示 */
-    color: white; /* テキストの色を白に */
-    text-decoration: none; /* 下線をなくす */
-    border-radius: 5px; /* 角を丸くする */
-    font-size: 16px; /* フォントサイズを設定 */
-    padding: 10px 20px; /* パディングを追加 */
-    cursor: pointer; /* カーソルをポインターに */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 影を追加 */
-    transition: background-color 0.3s ease; /* 背景色の変化にトランジションを追加 */
-  }
-
-  .button-link-blue {
-    background-color: #3498db; /* 青色 */
-  }
-
-  .button-link-blue:hover {
-    background-color: #2980b9; /* ホバー時の青色 */
-  }
-
-  .button-link-orange {
-    background-color: #e67e22; /* オレンジ色 */
-  }
-
-  .button-link-orange:hover {
-    background-color: #d35400; /* ホバー時のオレンジ色 */
-  }
-</style>
 
 <div id="users">
   <% @users.each do |user| %>
