@@ -12,13 +12,13 @@
   <% end %>
 
   <div class="mb-4">
-    <%= form.label :name, "名前", class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.label :name, t('activerecord.attributes.user.name'), class: "block text-gray-700 text-sm font-bold mb-2" %>
     <%= form.text_field :name, class: "form-control shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "名前を入力してください" %>
   </div>
 
   <div class="flex items-center mb-4">
     <div class="">
-      <%= form.label :stand_image, "立ち画像(左から右へいく画像を使用してください)", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= form.label :stand_image, t('activerecord.attributes.user.stand_image'), class: "block text-gray-700 text-sm font-bold mb-2" %>
       <%= form.file_field :stand_image, class: "form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*' %>
     </div>
 
@@ -33,7 +33,7 @@
 
   <div class="flex items-center mb-4">
     <div class="">
-      <%= form.label :fly_image, "飛び出し画像(地面から足は浮いた瞬間の画像)", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= form.label :fly_image, t('activerecord.attributes.user.fly_image'), class: "block text-gray-700 text-sm font-bold mb-2" %>
       <%= form.file_field :fly_image, class: "form-control shadow appearance-none border rounded  py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*' %>
     </div>
   
@@ -48,7 +48,7 @@
 
   <div class="flex items-center mb-4">
     <div class="">
-      <%= form.label :land_image, "着手画像(手に体重が乗った瞬間の画像)", class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= form.label :land_image, t('activerecord.attributes.user.land_image'), class: "block text-gray-700 text-sm font-bold mb-2" %>
       <%= form.file_field :land_image, class: "form-control shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", accept: 'image/*' %>
     </div>
     <div class="ml-4">

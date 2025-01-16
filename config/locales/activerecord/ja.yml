@@ -1,0 +1,10 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+    attributes:
+      user:
+        name: 名前
+        stand_image: 立ち画像
+        fly_image: 飛び出し画像
+        land_image: 着手画像

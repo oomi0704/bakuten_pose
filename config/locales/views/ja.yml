@@ -1,0 +1,34 @@
+ja:
+  common:
+    back_to_show: 診断結果へ戻る
+    back_to_index: 診断一覧へ 
+    delete: 削除
+    edit: 編集
+    
+  helpers:
+    submit:
+      create: 登録
+      submit: 保存
+      update: 更新
+    label:
+      email: メールアドレス
+      password: パスワード
+  defaults:
+    new:
+      title: ログイン
+      login: ログイン
+      to_register_page: 登録ページへ
+      password_forget: パスワードをお忘れの方はこちら
+
+  users:
+    index:
+      title: バク転診断
+      analysis: ⬆️写真を診断する
+    show:
+      title: 診断結果
+    
+    new:
+      title: 新しくバク転写真を追加する
+      
+  header:
+    
