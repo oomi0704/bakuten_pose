@@ -5,7 +5,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
-    <script src="/javascripts/pose_direction.js"></script>
     <meta charset="UTF-8">
   </head>
   
@@ -24,8 +23,6 @@
       </div>
       <%= render 'pose/pose_stand' %>
     </div>
-
-
 
      <div id="container">
       <div class="flex space-x-4">  
@@ -51,18 +48,5 @@
       </div>
       <%= render 'pose/pose_land' %>
     </div>
-
-    <script src="/javascripts/pose_direction.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const startButton = document.getElementById('start-button');
-        if (startButton) {
-          startButton.addEventListener('click', function() {
-            startPoseDetection(); // pose_direction.js内の関数を呼び出す
-          });
-        }
-      });
-    </script>
-
   </body>
 </html>
