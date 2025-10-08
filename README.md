@@ -12,6 +12,7 @@
 - **データベース**: PostgreSQL
 - **フロントエンド**: Tailwind CSS, Stimulus (Hotwire)
 - **画像処理**: CarrierWave + MiniMagick (WebP変換)
+- **ストレージ**: AWS S3 (本番環境) / ローカルファイルシステム (開発環境)
 - **AI姿勢解析**: MediaPipe Pose (TensorFlow.js)
 - **認証**: Sorcery
 - **デプロイ**: Render
