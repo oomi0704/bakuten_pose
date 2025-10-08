@@ -4,8 +4,12 @@
 <div class="mt-5"></div>
 
 <div>
-  <%= link_to t('common.edit'), edit_user_path(@user), class: "bg-blue-500 text-white py-2 px-4 rounded mr-2 mt-5" %> |
-  <%= link_to t('common.back_to_index'), users_path, class: "bg-blue-500 text-white py-2 px-4 rounded mr-2 mt-5" %>
-
-  <%= button_to t('common.delete'), @user, method: :delete, class: "bg-red-500 text-white py-2 px-4 rounded mt-4" %>
+  <%= link_to t('common.back_to_index'), users_path, class: "bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded mr-2 mt-5" %>
+  
+  <% if current_user == @user %>
+    <%= link_to t('common.edit'), edit_user_path(@user), class: "bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mr-2 mt-5" %>
+    <%= button_to t('common.delete'), @user, method: :delete, 
+                  data: { turbo_confirm: "投稿を削除してもよろしいですか？" },
+                  class: "bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded mt-4" %>
+  <% end %>
 </div>

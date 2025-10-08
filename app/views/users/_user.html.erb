@@ -1,11 +1,83 @@
-<div id="<%= dom_id user %>">
-  <p>
-    <strong>名前:</strong>
-    <%= user.name %>
-  </p>
-  <div class="flex space-x-4">
-    <%= image_tag user.stand_image_url, class: "card-img-top", width: "300", height:"200" %>
-    <%= image_tag user.fly_image_url, class: "card-img-top", width: "300", height:"200" %>
-    <%= image_tag user.land_image_url, class: "card-img-top", width: "300", height:"200" %>
+<div id="<%= dom_id user %>" class="bg-yellow-50 border-l-4 border-yellow-400 p-6 shadow-md">
+  <!-- ヘッダー部分 -->
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
+        <span class="text-yellow-900 font-bold text-lg">📌</span>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold text-gray-800">
+          <%= user.name %>さんのバク転
+        </h3>
+        <p class="text-sm text-gray-600">
+          投稿日: <%= user.created_at.strftime("%Y年%m月%d日") %>
+        </p>
+      </div>
+    </div>
+    <div class="text-right">
+      <span class="inline-block bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+        ID: #<%= user.id %>
+      </span>
+    </div>
   </div>
+  
+  <!-- 写真セクション -->
+  <div class="bg-white rounded-lg p-4 shadow-inner border border-yellow-200">
+    <div class="flex gap-2">
+      <!-- 立ちポーズ -->
+      <div class="flex-1 text-center">
+        <div class="mb-2">
+          <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">
+            立ちポーズ
+          </span>
+        </div>
+        <% if user.stand_image.present? %>
+          <%= image_tag user.stand_image_url, 
+              class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
+              alt: "立ちポーズ" %>
+        <% else %>
+          <div class="w-full h-64 bg-gray-100 rounded border border-gray-300 flex items-center justify-center">
+            <span class="text-gray-400 text-base">画像なし</span>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- 空中ポーズ -->
+      <div class="flex-1 text-center">
+        <div class="mb-2">
+          <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-medium">
+            空中ポーズ
+          </span>
+        </div>
+        <% if user.fly_image.present? %>
+          <%= image_tag user.fly_image_url, 
+              class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
+              alt: "空中ポーズ" %>
+        <% else %>
+          <div class="w-full h-64 bg-gray-100 rounded border border-gray-300 flex items-center justify-center">
+            <span class="text-gray-400 text-base">画像なし</span>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- 着地ポーズ -->
+      <div class="flex-1 text-center">
+        <div class="mb-2">
+          <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium">
+            着地ポーズ
+          </span>
+        </div>
+        <% if user.land_image.present? %>
+          <%= image_tag user.land_image_url, 
+              class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
+              alt: "着地ポーズ" %>
+        <% else %>
+          <div class="w-full h-64 bg-gray-100 rounded border border-gray-300 flex items-center justify-center">
+            <span class="text-gray-400 text-base">画像なし</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
 </div>
