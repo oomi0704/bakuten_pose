@@ -1,10 +1,38 @@
-<h1>編集</h1>
+<div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-12 px-4">
+  <div class="max-w-4xl mx-auto">
+    <!-- ヘッダー -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-full mb-4">
+        <span class="text-3xl">✏️</span>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">投稿を編集</h1>
+      <p class="text-gray-600">バク転写真の情報を更新します</p>
+    </div>
 
-<%= render "form", user: @user %>
+    <!-- フォーム -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+      <div class="bg-gradient-to-r from-green-500 to-green-600 px-8 py-6">
+        <h2 class="text-2xl font-bold text-white flex items-center">
+          <span class="mr-3">📝</span>
+          編集フォーム
+        </h2>
+      </div>
 
-<br>
+      <div class="p-8">
+        <%= render "form", user: @user %>
+      </div>
+    </div>
 
-<div>
-  <%= link_to t('common.back_to_show'), @user, class: "bg-blue-500 text-white py-2 px-4 rounded" %> |
-  <%= link_to t('common.back_to_index'), users_path, class: "bg-orange-500 text-white py-2 px-4 rounded" %>
+    <!-- ボタンエリア -->
+    <div class="mt-8 flex justify-center space-x-4">
+      <%= link_to @user, class: "inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md" do %>
+        <span class="mr-2">👁</span>
+        <%= t('common.back_to_show') %>
+      <% end %>
+      <%= link_to users_path, class: "inline-flex items-center bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md" do %>
+        <span class="mr-2">←</span>
+        <%= t('common.back_to_index') %>
+      <% end %>
+    </div>
+  </div>
 </div>

@@ -23,7 +23,7 @@
             <%= t('common.back_to_index') %>
           <% end %>
           
-          <% if current_user == @user %>
+          <% if current_user && current_user.email == @user.email %>
             <%= link_to edit_user_path(@user), class: "inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md" do %>
               <span class="mr-2">✏️</span>
               <%= t('common.edit') %>

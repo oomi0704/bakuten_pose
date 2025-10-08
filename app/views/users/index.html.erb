@@ -44,7 +44,7 @@
               </div>
               
               <!-- 編集・削除ボタン -->
-              <% if current_user == user %>
+              <% if current_user && current_user.email == user.email %>
                 <div class="flex items-center justify-center space-x-3 pt-2 border-t border-gray-200">
                   <%= link_to "✏️ 編集", edit_user_path(user), 
                               class: "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md" %>
