@@ -13,7 +13,12 @@ Rails.application.routes.draw do
   get 'signup', to: 'user_registrations#new', as: :signup
   post 'signup', to: 'user_registrations#create'
 
-  # ユーザー関連のルート
-  resources :users
-  root 'users#index'
+  # 管理画面
+  namespace :admin do
+    resources :posts, only: [:index, :destroy]
+  end
+
+  # 投稿関連のルート
+  resources :posts
+  root 'posts#index'
 end

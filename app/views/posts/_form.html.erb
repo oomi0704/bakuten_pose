@@ -1,0 +1,164 @@
+<%= form_with(model: post, local: true, class: "space-y-6") do |form| %>
+  <% if post.errors.any? %>
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-lg">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <span class="text-red-400 text-xl">❌</span>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">
+            <%= pluralize(post.errors.count, "個のエラー") %>があります
+          </h3>
+          <div class="mt-2 text-sm text-red-700">
+            <ul class="list-disc list-inside space-y-1">
+              <% post.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- 名前入力 -->
+  <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+    <%= form.label :name, class: "block text-gray-800 text-lg font-bold mb-3 flex items-center" do %>
+      <span class="mr-2">👤</span>
+      名前
+    <% end %>
+    <%= form.text_field :name, class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition", placeholder: "名前を入力してください" %>
+  </div>
+
+  <!-- 立ち画像 -->
+  <div class="bg-blue-50 rounded-lg p-6 border border-blue-200">
+    <div class="flex items-start space-x-6">
+      <div class="flex-1">
+        <%= form.label :stand_image, class: "block text-blue-800 text-lg font-bold mb-3 flex items-center" do %>
+          <span class="mr-2">🏃</span>
+          立ち画像
+        <% end %>
+        <%= form.file_field :stand_image, id: 'stand_image_input', class: "block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200 cursor-pointer", accept: 'image/*' %>
+        <p class="mt-2 text-sm text-blue-600">立ちポーズの写真をアップロード</p>
+      </div>
+      <div class="flex-shrink-0">
+        <% if post.stand_image.present? %>
+          <%= image_tag post.stand_image_url, id: 'stand_image_preview', class: 'w-32 h-32 object-cover rounded-lg border-2 border-blue-300 shadow-md', alt: 'Stand Image' %>
+        <% else %>
+          <%= image_tag 'stand.png', id: 'stand_image_preview', class: 'w-32 h-32 object-cover rounded-lg border-2 border-blue-300 shadow-md', alt: 'Stand Image' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- 空中画像 -->
+  <div class="bg-green-50 rounded-lg p-6 border border-green-200">
+    <div class="flex items-start space-x-6">
+      <div class="flex-1">
+        <%= form.label :fly_image, class: "block text-green-800 text-lg font-bold mb-3 flex items-center" do %>
+          <span class="mr-2">🚀</span>
+          飛び出し画像
+        <% end %>
+        <%= form.file_field :fly_image, id: 'fly_image_input', class: "block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-100 file:text-green-700 hover:file:bg-green-200 cursor-pointer", accept: 'image/*' %>
+        <p class="mt-2 text-sm text-green-600">空中ポーズの写真をアップロード</p>
+      </div>
+      <div class="flex-shrink-0">
+        <% if post.fly_image.present? %>
+          <%= image_tag post.fly_image_url, id: 'fly_image_preview', class: 'w-32 h-32 object-cover rounded-lg border-2 border-green-300 shadow-md', alt: 'Fly Image' %>
+        <% else %>
+          <%= image_tag 'fly.png', id: 'fly_image_preview', class: 'w-32 h-32 object-cover rounded-lg border-2 border-green-300 shadow-md', alt: 'Fly Image' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- 着手画像 -->
+  <div class="bg-red-50 rounded-lg p-6 border border-red-200">
+    <div class="flex items-start space-x-6">
+      <div class="flex-1">
+        <%= form.label :land_image, class: "block text-red-800 text-lg font-bold mb-3 flex items-center" do %>
+          <span class="mr-2">🏁</span>
+          着手画像
+        <% end %>
+        <%= form.file_field :land_image, id: 'land_image_input', class: "block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-100 file:text-red-700 hover:file:bg-red-200 cursor-pointer", accept: 'image/*' %>
+        <p class="mt-2 text-sm text-red-600">着手ポーズの写真をアップロード</p>
+      </div>
+      <div class="flex-shrink-0">
+        <% if post.land_image.present? %>
+          <%= image_tag post.land_image_url, id: 'land_image_preview', class: 'w-32 h-32 object-cover rounded-lg border-2 border-red-300 shadow-md', alt: 'Land Image' %>
+        <% else %>
+          <%= image_tag 'land.png', id: 'land_image_preview', class: 'w-32 h-32 object-cover rounded-lg border-2 border-red-300 shadow-md', alt: 'Land Image' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%= form.hidden_field :stand_image_cache %>
+  <%= form.hidden_field :fly_image_cache %>
+  <%= form.hidden_field :land_image_cache %>
+
+  <!-- 送信ボタン -->
+  <div class="flex justify-center pt-6">
+    <% if post.new_record? %>
+      <%= form.submit "投稿する", class: "bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-4 px-12 rounded-xl transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-lg" %>
+    <% else %>
+      <%= form.submit "更新する", class: "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-12 rounded-xl transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-lg" %>
+    <% end %>
+  </div>
+<% end %>
+
+<script>
+// 画像プレビュー機能
+document.addEventListener('DOMContentLoaded', function() {
+  // 立ち画像のプレビュー
+  const standInput = document.getElementById('stand_image_input');
+  const standPreview = document.getElementById('stand_image_preview');
+  
+  if (standInput) {
+    standInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          standPreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  // 空中画像のプレビュー
+  const flyInput = document.getElementById('fly_image_input');
+  const flyPreview = document.getElementById('fly_image_preview');
+  
+  if (flyInput) {
+    flyInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          flyPreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  // 着手画像のプレビュー
+  const landInput = document.getElementById('land_image_input');
+  const landPreview = document.getElementById('land_image_preview');
+  
+  if (landInput) {
+    landInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          landPreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+});
+</script>

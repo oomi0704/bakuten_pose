@@ -30,6 +30,10 @@
             <% if current_user %>
               <!-- ログイン済みの場合 -->
               <span class="text-white">こんにちは、<%= current_user.email %>さん</span>
+              <% if current_user.admin? %>
+                <%= link_to "👑 管理画面", admin_posts_path, 
+                            class: "bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded transition duration-300" %>
+              <% end %>
               <%= form_with url: logout_path, method: :delete, local: true, class: "inline" do |form| %>
                 <%= form.submit "ログアウト", 
                     class: "bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 cursor-pointer" %>

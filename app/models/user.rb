@@ -1,15 +1,18 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
   
+  has_many :posts, dependent: :destroy
+  
   validates :password, length: { minimum: 3 }, if: :password_required?
   validates :password, confirmation: true, if: :password_required?
   validates :password_confirmation, presence: true, if: :password_required?
   
-  validates :email, presence: true, if: :email_required?
+  validates :email, presence: true, uniqueness: true
   
-  mount_uploader :stand_image, StandImageUploader
-  mount_uploader :fly_image, FlyImageUploader
-  mount_uploader :land_image, LandImageUploader
+  # 管理者判定
+  def admin?
+    admin == true
+  end
 
   # 写真のみの更新用メソッド
   def update_images_only(image_params)
@@ -26,11 +29,11 @@ class User < ApplicationRecord
 
   def password_required?
     # 新規作成時のみ、またはパスワードが実際に変更された場合のみ
-    (new_record? && password.present?) || (persisted? && password.present? && password_changed?)
+    (new_record? && password.present?) || (persisted? && password.present?)
   end
 
   def email_required?
     # 新規作成時のみ、またはemailが実際に変更された場合のみ
-    new_record? || email_changed?
+    new_record?
   end
 end

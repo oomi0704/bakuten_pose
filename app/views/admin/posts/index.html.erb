@@ -1,0 +1,97 @@
+<div class="bg-gradient-to-br from-purple-50 to-pink-100 min-h-screen py-8 px-4">
+  <div class="max-w-7xl mx-auto">
+    <!-- ヘッダー -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 mb-8">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+            <span class="text-3xl">👑</span>
+          </div>
+          <div>
+            <h1 class="text-3xl font-bold text-gray-800">管理画面</h1>
+            <p class="text-gray-600">全ての投稿を管理できます</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-sm text-gray-500 mb-2">総投稿数</div>
+          <div class="text-3xl font-bold text-purple-600"><%= @posts.count %>件</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 投稿一覧 -->
+    <div class="space-y-4">
+      <% @posts.each do |post| %>
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300">
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                  <span class="text-2xl">📌</span>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-800"><%= post.name %></h3>
+                  <p class="text-sm text-gray-500">
+                    ID: #<%= post.id %> | 
+                    投稿者: <%= post.user.email %> | 
+                    投稿日: <%= post.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+                  </p>
+                </div>
+              </div>
+              
+              <div class="flex items-center space-x-3">
+                <%= link_to "👁 詳細", post_path(post), 
+                            class: "bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md" %>
+                <%= button_to "🗑️ 削除", admin_post_path(post), method: :delete, 
+                              data: { turbo_confirm: "この投稿を削除してもよろしいですか？" },
+                              class: "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-md" %>
+              </div>
+            </div>
+            
+            <!-- 写真プレビュー -->
+            <div class="grid grid-cols-3 gap-4 mt-4">
+              <div class="text-center">
+                <p class="text-xs text-gray-500 mb-2">立ちポーズ</p>
+                <% if post.stand_image.present? %>
+                  <%= image_tag post.stand_image_url, class: 'w-full h-24 object-cover rounded-lg border border-gray-200' %>
+                <% else %>
+                  <div class="w-full h-24 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
+                    <span class="text-gray-400 text-xs">なし</span>
+                  </div>
+                <% end %>
+              </div>
+              <div class="text-center">
+                <p class="text-xs text-gray-500 mb-2">空中ポーズ</p>
+                <% if post.fly_image.present? %>
+                  <%= image_tag post.fly_image_url, class: 'w-full h-24 object-cover rounded-lg border border-gray-200' %>
+                <% else %>
+                  <div class="w-full h-24 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
+                    <span class="text-gray-400 text-xs">なし</span>
+                  </div>
+                <% end %>
+              </div>
+              <div class="text-center">
+                <p class="text-xs text-gray-500 mb-2">着手ポーズ</p>
+                <% if post.land_image.present? %>
+                  <%= image_tag post.land_image_url, class: 'w-full h-24 object-cover rounded-lg border border-gray-200' %>
+                <% else %>
+                  <div class="w-full h-24 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
+                    <span class="text-gray-400 text-xs">なし</span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- 戻るボタン -->
+    <div class="mt-8 text-center">
+      <%= link_to root_path, class: "inline-flex items-center bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md" do %>
+        <span class="mr-2">←</span>
+        掲示板に戻る
+      <% end %>
+    </div>
+  </div>
+</div>
