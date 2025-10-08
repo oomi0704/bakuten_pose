@@ -2,12 +2,18 @@ ja:
   activerecord:
     models:
       user: ユーザー
+      post: 投稿
     attributes:
       user:
         name: 名前
         email: メールアドレス
         password: パスワード
         password_confirmation: パスワード（確認）
+        stand_image: 立ち画像
+        fly_image: 飛び出し画像
+        land_image: 着手画像
+      post:
+        name: 名前
         stand_image: 立ち画像
         fly_image: 飛び出し画像
         land_image: 着手画像
