@@ -23,7 +23,7 @@ ja:
   users:
     index:
       title: バク転診断
-      analysis: ⬆️写真を診断する
+      analysis: 診断する
     show:
       title: 診断結果
     

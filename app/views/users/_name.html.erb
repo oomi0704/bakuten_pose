@@ -1,7 +1,14 @@
-<div id="<%= dom_id user %>">
-  <p>
-    <strong>名前:</strong>
-    <%= user.name %>
-  </p>
-
+<div id="<%= dom_id user %>" class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-8">
+  <div class="flex items-center space-x-4">
+    <div class="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+      <span class="text-3xl">👤</span>
+    </div>
+    <div>
+      <p class="text-sm text-gray-500 font-medium mb-1">投稿者</p>
+      <h2 class="text-3xl font-bold text-gray-800">
+        <%= user.name %>
+        <span class="text-gray-600 text-2xl">さん</span>
+      </h2>
+    </div>
+  </div>
 </div>
