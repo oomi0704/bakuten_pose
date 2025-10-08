@@ -74,7 +74,7 @@ function CalcKneeAngle(keypoints) {
     const ankle = keypoints[15];
   
     if (CalcAngle(hip, knee, ankle) <= 50) {
-        return CalcAngle(hip, knee, ankle) + "しゃがみすぎです";
+        return CalcAngle(hip, knee, ankle) + "度\nしゃがみすぎです";
     } else {
         return CalcAngle(hip, knee, ankle) + "度⚪︎";
     }
@@ -86,7 +86,7 @@ function CalcKneeBendAngle(keypoints) {
   const ankle = keypoints[15];
 
   if (CalcAngle(hip, knee, ankle) < 140) {
-      return CalcAngle(hip, knee, ankle) + "膝が曲がっています";
+      return CalcAngle(hip, knee, ankle) + "度\n膝が曲がっています";
   } else {
       return CalcAngle(hip, knee, ankle) + "度⚪︎";
   }
@@ -102,9 +102,9 @@ function CalcBodyAngle(keypoints) {
   if (60 <= angle && angle <= 100) {
     return angle + "度⚪︎";
   } else if (angle < 60) {
-    return angle + "度　体を前に倒しすぎです";
+    return angle + "度\n体を前に倒しすぎです";
   } else if (angle > 100) {
-    return angle + "度　体を後ろに倒しすぎです";
+    return angle + "度\n体を後ろに倒しすぎです";
   }
 }
 
@@ -123,45 +123,38 @@ function BodyDistortion(keypoints) {
   const kneeDistortionX = Math.abs(keypoints[13].x - keypoints[14].x);
   const ankleDistortionX = Math.abs(keypoints[15].x - keypoints[16].x);
 
-  let result = "";
+  let distortions = [];
 
   if (shoulderDistortionY > 10 && shoulderDistortionX > 10) {
-    result += "肩が歪んでいます\n";
-  } else {
-    result += "肩: ⚪︎\n";
+    distortions.push("肩が歪んでいます");
   }
 
   if (elbowDistortionY > 10 && elbowDistortionX > 10) {
-    result += "肘が歪んでいます\n";
-  } else {
-    result += "肘: ⚪︎\n";
+    distortions.push("肘が歪んでいます");
   }
 
   if (wristDistortionY > 10 && wristDistortionX > 10) {
-    result += "手首が歪んでいます\n";
-  } else {
-    result += "手首: ⚪︎\n";
+    distortions.push("手首が歪んでいます");
   }
 
   if (hipDistortionY > 10 && hipDistortionX > 10) {
-    result += "腰が歪んでいます\n";
-  } else {
-    result += "腰: ⚪︎\n";
+    distortions.push("腰が歪んでいます");
   }
 
   if (kneeDistortionY > 10 && kneeDistortionX > 10) {
-    result += "膝が歪んでいます\n";
-  } else {
-    result += "膝: ⚪︎\n";
+    distortions.push("膝が歪んでいます");
   }
 
   if (ankleDistortionY > 10 && ankleDistortionX > 10) {
-    result += "足首が歪んでいます\n";
-  } else {
-    result += "足首: ⚪︎\n";
+    distortions.push("足首が歪んでいます");
   }
 
-  return result.trim(); // 結果を返す
+  // 歪みがない場合は⚪︎を返す、ある場合は歪んでいる部位のみ返す
+  if (distortions.length === 0) {
+    return "⚪︎";
+  } else {
+    return distortions.join("\n");
+  }
 }
 
 function CalcHipHeight(keypoint_stand, keypoint_fly) {
@@ -181,9 +174,9 @@ function CalcHipHeight(keypoint_stand, keypoint_fly) {
   }
 
   if (hip_positon > 0) {
-    result += "腰の体重移動: ⚪︎\n";
+    result += "腰の体重移動: ⚪︎";
   } else {
-    result += "真上に飛びすぎです\n";
+    result += "真上に飛びすぎです";
   }
 
   return result.trim(); // 結果を返す
@@ -210,7 +203,7 @@ function CalcTouchPosition(keypoints_land) {
   if (touch_position >= -10 && touch_position <= 10) {
     return  "⚪︎";
   } else {
-    return  " 着手時に肩と腰が一直線上になっていません";
+    return  "着手時に\n肩と腰が一直線上に\nなっていません";
   }
 }
 
@@ -222,7 +215,7 @@ function CalcEyePosition(keypoints_land) {
   if (touch_position < 0) {
     return "⚪︎";
   } else {
-    return "顎を上げるまたは、手と手の間を見ましょう";
+    return "顎を上げるまたは\n手と手の間を見ましょう";
   }
 } 
 
@@ -320,11 +313,72 @@ function startPoseDetection() {
       document.getElementById('eye-land-score').innerHTML = CalcEyePosition(poses[0].keypoints);
       drawKeypoints(ctx_land, poses[0].keypoints);
       drawSkeleton(ctx_land, poses[0].keypoints);
+      
+      // 全ての分析が完了したらスコアを計算
+      setTimeout(() => {
+        calculateAndDisplayScore();
+      }, 500);
     });
   });
 }
 
 // --- ここまでpose_direction.jsの内容 ---
+
+// ⚪︎の数をカウントする関数
+function countCircles() {
+  const allScores = [
+    // 立ちポーズ
+    document.getElementById('knee-stand-score')?.innerHTML,
+    document.getElementById('upper-body-stand-score')?.innerHTML,
+    document.getElementById('body-stand-score')?.innerHTML,
+    // 空中ポーズ
+    document.getElementById('foot-fly-score')?.innerHTML,
+    document.getElementById('knee-spread-fly-score')?.innerHTML,
+    document.getElementById('knee-bend-fly-score')?.innerHTML,
+    document.getElementById('hip-height-fly-score')?.innerHTML,
+    document.getElementById('arm-swing-fly-score')?.innerHTML,
+    document.getElementById('body-fly-score')?.innerHTML,
+    // 着手ポーズ
+    document.getElementById('knee-bend-land-score')?.innerHTML,
+    document.getElementById('touch-land-score')?.innerHTML,
+    document.getElementById('eye-land-score')?.innerHTML,
+    document.getElementById('body-land-score')?.innerHTML
+  ];
+
+  let circleCount = 0;
+  let totalItems = 0;
+
+  allScores.forEach(score => {
+    if (score && score !== '-') {
+      // 各項目内の⚪︎の数をカウント
+      const circles = (score.match(/⚪︎/g) || []).length;
+      circleCount += circles;
+      
+      // 項目数をカウント（複数行のメッセージの場合も1項目として扱う）
+      totalItems += 1;
+    }
+  });
+
+  return { circleCount, totalItems };
+}
+
+// スコアを計算して表示する関数
+function calculateAndDisplayScore() {
+  const { circleCount, totalItems } = countCircles();
+  
+  // 総合スコア（⚪︎の数 / 項目数 * 100）
+  const totalScore = totalItems > 0 ? Math.round((circleCount / totalItems) * 100) : 0;
+  
+  // 改善ポイント数（⚪︎がない項目数）
+  const improvementPoints = totalItems - circleCount;
+  
+  // 結果を表示
+  const totalScoreElement = document.getElementById('total-score');
+  const improvementPointsElement = document.getElementById('improvement-points');
+  
+  if (totalScoreElement) totalScoreElement.innerHTML = totalScore + '点';
+  if (improvementPointsElement) improvementPointsElement.innerHTML = improvementPoints + '件';
+}
 
 // 診断開始ボタンの初期化
 document.addEventListener('DOMContentLoaded', function() {
