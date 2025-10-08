@@ -27,6 +27,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 gem 'carrierwave', '2.2.2'
+gem 'mini_magick'
 
 gem 'fog-aws'
 
