@@ -36,9 +36,9 @@
               class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
               alt: "立ちポーズ" %>
         <% else %>
-          <div class="w-full h-64 bg-gray-100 rounded border border-gray-300 flex items-center justify-center">
-            <span class="text-gray-400 text-base">画像なし</span>
-          </div>
+          <%= image_tag 'stand.png', 
+              class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
+              alt: "立ちポーズ（見本）" %>
         <% end %>
       </div>
       
@@ -54,27 +54,27 @@
               class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
               alt: "空中ポーズ" %>
         <% else %>
-          <div class="w-full h-64 bg-gray-100 rounded border border-gray-300 flex items-center justify-center">
-            <span class="text-gray-400 text-base">画像なし</span>
-          </div>
+          <%= image_tag 'fly.png', 
+              class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
+              alt: "空中ポーズ（見本）" %>
         <% end %>
       </div>
       
-      <!-- 着地ポーズ -->
+      <!-- 着手ポーズ -->
       <div class="flex-1 text-center">
         <div class="mb-2">
           <span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-medium">
-            着地ポーズ
+            着手ポーズ
           </span>
         </div>
         <% if user.land_image.present? %>
           <%= image_tag user.land_image_url, 
               class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
-              alt: "着地ポーズ" %>
+              alt: "着手ポーズ" %>
         <% else %>
-          <div class="w-full h-64 bg-gray-100 rounded border border-gray-300 flex items-center justify-center">
-            <span class="text-gray-400 text-base">画像なし</span>
-          </div>
+          <%= image_tag 'land.png', 
+              class: "w-full h-64 object-contain rounded border border-gray-300 shadow-sm bg-gray-50", 
+              alt: "着手ポーズ（見本）" %>
         <% end %>
       </div>
     </div>

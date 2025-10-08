@@ -1,41 +1,124 @@
-<!-- 診断開始ボタン -->
-<button id="start-button" class="bg-blue-500 text-white py-2 px-4 rounded">診断開始</button>
-<p class="text-gray-500">※ブラウザを更新してから診断開始ボタンを押してください</p>
-<div class="my-8"></div>
+<div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8 px-4">
+  <div class="max-w-6xl mx-auto">
+    <!-- ヘッダー部分 -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mb-4">
+        <span class="text-2xl">🤸</span>
+      </div>
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">バク転フォーム分析</h1>
+      <p class="text-gray-600">あなたのバク転フォームを詳細に分析します</p>
+    </div>
 
-<!-- 画像とキャンバスの表示 -->
-<div id="container">
-  <div class="flex space-x-4">
-  <% if @user.stand_image.present? %>
-    <%= image_tag @user.stand_image.url, id: 'img_stand', width: '500px', alt: 'Stand Image', crossorigin: 'anonymous' %>
-  <% else %>
-    <%= image_tag 'stand.png', id: 'img_stand', width: '500px', alt: 'Stand Image', crossorigin: 'anonymous' %>
-  <% end %>
-  <canvas id="canvas_stand" ></canvas> 
+    <!-- 診断開始ボタン -->
+    <div class="text-center mb-12">
+      <button id="start-button" class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-lg">
+        🚀 診断を開始する
+      </button>
+      <p class="text-gray-500 text-sm mt-4">
+        ※ブラウザを更新してから診断開始ボタンを押してください
+      </p>
+    </div>
+
+    <!-- 分析結果表示エリア -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- 立ちポーズ -->
+      <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+          <h3 class="text-lg font-bold text-white flex items-center">
+            <span class="mr-2">🏃</span>
+            立ちポーズ
+          </h3>
+        </div>
+        <div class="p-6">
+          <div class="flex justify-center mb-4">
+            <div class="relative">
+              <% if @user.stand_image.present? %>
+                <%= image_tag @user.stand_image.url, id: 'img_stand', class: 'w-full max-w-md rounded-lg shadow-md', alt: 'Stand Image', crossorigin: 'anonymous' %>
+              <% else %>
+                <%= image_tag 'stand.png', id: 'img_stand', class: 'w-full max-w-md rounded-lg shadow-md', alt: 'Stand Image', crossorigin: 'anonymous' %>
+              <% end %>
+              <canvas id="canvas_stand" class="absolute top-0 left-0 w-full h-full"></canvas>
+            </div>
+          </div>
+          <div class="mt-4">
+            <%= render 'pose/pose_stand' %>
+          </div>
+        </div>
+      </div>
+
+      <!-- 空中ポーズ -->
+      <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+        <div class="bg-gradient-to-r from-green-500 to-green-600 px-6 py-4">
+          <h3 class="text-lg font-bold text-white flex items-center">
+            <span class="mr-2">🚀</span>
+            空中ポーズ
+          </h3>
+        </div>
+        <div class="p-6">
+          <div class="flex justify-center mb-4">
+            <div class="relative">
+              <% if @user.fly_image.present? %>
+                <%= image_tag @user.fly_image.url, id: 'img_fly', class: 'w-full max-w-md rounded-lg shadow-md', alt: 'Fly Image', crossorigin: 'anonymous' %>
+              <% else %>
+                <%= image_tag 'fly.png', id: 'img_fly', class: 'w-full max-w-md rounded-lg shadow-md', alt: 'Fly Image', crossorigin: 'anonymous' %>
+              <% end %>
+              <canvas id="canvas_fly" class="absolute top-0 left-0 w-full h-full"></canvas>
+            </div>
+          </div>
+          <div class="mt-4">
+            <%= render 'pose/pose_fly' %>
+          </div>
+        </div>
+      </div>
+
+      <!-- 着手ポーズ -->
+      <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+        <div class="bg-gradient-to-r from-red-500 to-red-600 px-6 py-4">
+          <h3 class="text-lg font-bold text-white flex items-center">
+            <span class="mr-2">🏁</span>
+            着手ポーズ
+          </h3>
+        </div>
+        <div class="p-6">
+          <div class="flex justify-center mb-4">
+            <div class="relative">
+              <% if @user.land_image.present? %>
+                <%= image_tag @user.land_image.url, id: 'img_land', class: 'w-full max-w-md rounded-lg shadow-md', alt: 'Land Image', crossorigin: 'anonymous' %>
+              <% else %>
+                <%= image_tag 'land.png', id: 'img_land', class: 'w-full max-w-md rounded-lg shadow-md', alt: 'Land Image', crossorigin: 'anonymous' %>
+              <% end %>
+              <canvas id="canvas_land" class="absolute top-0 left-0 w-full h-full"></canvas>
+            </div>
+          </div>
+          <div class="mt-4">
+            <%= render 'pose/pose_land' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分析結果サマリー -->
+    <div class="mt-12 bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800 flex items-center justify-center">
+          <span class="mr-3">📊</span>
+          分析結果サマリー
+        </h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center p-4 bg-blue-50 rounded-lg">
+          <div class="text-3xl font-bold text-blue-600 mb-2">-</div>
+          <div class="text-sm text-gray-600">総合スコア</div>
+        </div>
+        <div class="text-center p-4 bg-green-50 rounded-lg">
+          <div class="text-3xl font-bold text-green-600 mb-2">-</div>
+          <div class="text-sm text-gray-600">フォーム評価</div>
+        </div>
+        <div class="text-center p-4 bg-purple-50 rounded-lg">
+          <div class="text-3xl font-bold text-purple-600 mb-2">-</div>
+          <div class="text-sm text-gray-600">改善ポイント</div>
+        </div>
+      </div>
+    </div>
   </div>
-  <%= render 'pose/pose_stand' %>
-</div>
-
-<div id="container">
-  <div class="flex space-x-4">  
-  <% if @user.fly_image.present? %>
-    <%= image_tag @user.fly_image.url, id: 'img_fly', width: '500px', alt: 'Fly Image', crossorigin: 'anonymous' %>
-  <% else %>
-    <%= image_tag 'fly.png', id: 'img_fly', width: '500px', alt: 'Fly Image', crossorigin: 'anonymous' %>
-  <% end %>
-  <canvas id="canvas_fly" ></canvas> 
-  </div>
-  <div class="flex space-x-4">
-  <%= render 'pose/pose_fly' %>
-</div>
-
-<div class="flex space-x-4">
-<% if @user.land_image.present? %>
-  <%= image_tag @user.land_image.url, id: 'img_land', width: '500px', alt: 'Land Image', crossorigin: 'anonymous' %>
-<% else %>
-  <%= image_tag 'land.png', id: 'img_land', width: '500px', alt: 'Land Image', crossorigin: 'anonymous' %>
-<% end %>
-<canvas id="canvas_land" ></canvas> 
-</div>
-<%= render 'pose/pose_land' %>
 </div>

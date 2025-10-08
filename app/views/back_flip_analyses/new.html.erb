@@ -1,17 +1,155 @@
-<h1>バク転診断</h1>
-<p>動画入力フォーム</p>
+<div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- ヘッダー部分 -->
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mb-6">
+        <span class="text-3xl">🤸</span>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-800 mb-4">バク転診断システム</h1>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+        あなたのバク転フォームを分析して、改善点を見つけましょう！
+      </p>
+    </div>
 
-<%= form_with model: @back_flip_analysis do |f| %>
+    <!-- 診断フォーム -->
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+      <div class="bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-6">
+        <h2 class="text-2xl font-bold text-white flex items-center">
+          <span class="mr-3">📊</span>
+          画像アップロード
+        </h2>
+        <p class="text-blue-100 mt-2">バク転の各段階の画像をアップロードしてください</p>
+      </div>
 
-  <div>
-    <%= f.label :takeoff_image, "飛び出し画像を入力してください" %>
-    <%= f.file_field :takeoff_image %>
+      <!-- エラーメッセージ -->
+      <% if @back_flip_analysis.errors.any? %>
+        <div class="bg-red-50 border-l-4 border-red-400 p-4 m-8">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <span class="text-red-400 text-xl">❌</span>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">エラーが発生しました</h3>
+              <div class="mt-2 text-sm text-red-700">
+                <ul class="list-disc list-inside space-y-1">
+                  <% @back_flip_analysis.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <%= form_with model: @back_flip_analysis, local: true, multipart: true, class: "p-8 space-y-8" do |f| %>
+        <!-- 飛び出し画像 -->
+        <div class="space-y-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <span class="text-green-600 text-xl">🚀</span>
+            </div>
+            <div>
+              <label class="block text-lg font-semibold text-gray-800">
+                飛び出し画像
+              </label>
+              <p class="text-sm text-gray-600">バク転を始める瞬間の画像をアップロード</p>
+            </div>
+          </div>
+          
+          <div class="ml-15">
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-400 transition-colors duration-200">
+              <%= f.file_field :takeoff_image, 
+                  class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer",
+                  accept: 'image/*' %>
+              <div class="mt-4 flex items-center justify-center text-gray-500">
+                <span class="text-sm">📁 画像ファイルを選択してください</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 着手画像 -->
+        <div class="space-y-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+              <span class="text-red-600 text-xl">🏁</span>
+            </div>
+            <div>
+              <label class="block text-lg font-semibold text-gray-800">
+                着手画像
+              </label>
+              <p class="text-sm text-gray-600">バク転完了時の画像をアップロード</p>
+            </div>
+          </div>
+          
+          <div class="ml-15">
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-400 transition-colors duration-200">
+              <%= f.file_field :landing_image, 
+                  class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer",
+                  accept: 'image/*' %>
+              <div class="mt-4 flex items-center justify-center text-gray-500">
+                <span class="text-sm">📁 画像ファイルを選択してください</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 注意事項 -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <span class="text-yellow-400 text-xl">⚠️</span>
+            </div>
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-yellow-800">注意事項</h3>
+              <div class="mt-2 text-sm text-yellow-700">
+                <ul class="list-disc list-inside space-y-1">
+                  <li>画像はJPG、PNG形式でアップロードしてください</li>
+                  <li>画像サイズは5MB以下にしてください</li>
+                  <li>バク転の全体が映っている画像を推奨します</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 送信ボタン -->
+        <div class="flex justify-center pt-6">
+          <%= f.submit '診断を開始する', 
+              class: "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-12 rounded-xl transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center space-x-3 text-lg" %>
+        </div>
+      <% end %>
+    </div>
+
+    <!-- フッター情報 -->
+    <div class="mt-12 text-center">
+      <div class="bg-white rounded-xl shadow-md p-6 border border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-800 mb-3">診断の流れ</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="flex flex-col items-center">
+            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+              <span class="text-blue-600 font-bold">1</span>
+            </div>
+            <h4 class="font-medium text-gray-800">画像アップロード</h4>
+            <p class="text-sm text-gray-600 text-center mt-1">バク転の画像をアップロード</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+              <span class="text-green-600 font-bold">2</span>
+            </div>
+            <h4 class="font-medium text-gray-800">AI分析</h4>
+            <p class="text-sm text-gray-600 text-center mt-1">フォームを自動分析</p>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
+              <span class="text-purple-600 font-bold">3</span>
+            </div>
+            <h4 class="font-medium text-gray-800">結果表示</h4>
+            <p class="text-sm text-gray-600 text-center mt-1">改善点をレポート</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div>
-    <%= f.label :landing_image, "着手画像を入力してください" %>
-    <%= f.file_field :landing_image %>
-  </div>
-
-  <%= f.submit '保存'%>
-<% end %>
+</div>
