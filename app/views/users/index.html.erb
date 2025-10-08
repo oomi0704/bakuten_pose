@@ -29,20 +29,28 @@
       <% @users.each do |user| %>
         <div class="hover:shadow-lg transition duration-300">
           <%= render user %>
-          <div class="bg-white border-l-4 border-yellow-400 px-6 py-3 shadow-inner">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-4">
-                <%= link_to t('.analysis'), user, 
-                            class: "bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 inline-flex items-center space-x-2" %>
+          <div class="bg-white border-l-4 border-yellow-400 px-6 py-6 shadow-inner">
+            <div class="flex flex-col space-y-4">
+              <!-- 診断ボタン（大きく目立つ） -->
+              <div class="flex justify-center">
+                <%= link_to user, class: "w-full max-w-md" do %>
+                  <div class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-xl transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-center">
+                    <div class="flex items-center justify-center space-x-3">
+                      <span class="text-2xl">⬆️</span>
+                      <span class="text-xl"><%= t('.analysis') %></span>
+                    </div>
+                  </div>
+                <% end %>
               </div>
               
-              <% if current_user == user %>
-                <div class="flex items-center space-x-2">
+              <!-- 編集・削除ボタン -->
+              <% if current_user && current_user.email == user.email %>
+                <div class="flex items-center justify-center space-x-3 pt-2 border-t border-gray-200">
                   <%= link_to "✏️ 編集", edit_user_path(user), 
-                              class: "bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded transition duration-300" %>
+                              class: "bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md" %>
                   <%= button_to "🗑️ 削除", user, method: :delete, 
                                 data: { turbo_confirm: "投稿を削除してもよろしいですか？" },
-                                class: "bg-red-500 hover:bg-red-600 text-white text-sm py-1 px-3 rounded transition duration-300" %>
+                                class: "bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300 shadow-md" %>
                 </div>
               <% end %>
             </div>

@@ -5,6 +5,56 @@ ja:
     attributes:
       user:
         name: 名前
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認）
         stand_image: 立ち画像
         fly_image: 飛び出し画像
         land_image: 着手画像
+    errors:
+      messages:
+        record_invalid: "バリデーションに失敗しました: %{errors}"
+        restrict_dependent_destroy:
+          has_one: "%{record}が存在しているので削除できません"
+          has_many: "%{record}が存在しているので削除できません"
+      models:
+        user:
+          attributes:
+            email:
+              blank: を入力してください
+              taken: はすでに存在します
+              invalid: は有効なメールアドレスではありません
+            password:
+              blank: を入力してください
+              too_short: は%{count}文字以上で入力してください
+            password_confirmation:
+              blank: を入力してください
+              confirmation: の入力が一致しません
+  
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: を入力してください
+      taken: はすでに存在します
+      too_short: は%{count}文字以上で入力してください
+      too_long: は%{count}文字以内で入力してください
+      invalid: は有効な値ではありません
+      confirmation: の入力が一致しません
+      accepted: を受諾してください
+      empty: を入力してください
+      present: は入力しないでください
+      too_many: が多すぎます
+      too_few: が少なすぎます
+      equal_to: は%{count}にしてください
+      less_than: は%{count}より小さい値にしてください
+      less_than_or_equal_to: は%{count}以下の値にしてください
+      greater_than: は%{count}より大きい値にしてください
+      greater_than_or_equal_to: は%{count}以上の値にしてください
+      not_a_number: は数値で入力してください
+      not_an_integer: は整数で入力してください
+      odd: は奇数にしてください
+      even: は偶数にしてください
+      required: を入力してください
+      inclusion: は一覧にありません
+      exclusion: は予約されています
+      wrong_length: は%{count}文字で入力してください

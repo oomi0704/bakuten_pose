@@ -22,31 +22,22 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
+    @user = User.new(user_params)
+    
+    # ログイン済みの場合は現在のユーザーのemailを自動設定
     if current_user
-      # ログイン済みの場合は既存のユーザー情報を更新（写真のみ）
-      @user = current_user
-      
-      respond_to do |format|
-        if @user.update_images_only(user_params)
-          format.html { redirect_to @user, notice: '写真が正常に更新されました。' }
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
-      end
-    else
-      # 新規ユーザー登録の場合
-      @user = User.new(user_params)
-      
-      respond_to do |format|
-        if @user.save
-          format.html { redirect_to @user, notice: t('flash.notice.create') }
-          format.json { render :show, status: :created, location: @user }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+      @user.email = current_user.email
+      @user.password = SecureRandom.hex(10)  # ランダムなパスワードを設定
+      @user.password_confirmation = @user.password
+    end
+    
+    respond_to do |format|
+      if @user.save(validate: false)  # バリデーションをスキップ
+        format.html { redirect_to @user, notice: '投稿が正常に作成されました。' }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -82,7 +73,7 @@ class UsersController < ApplicationController
 
     # 投稿者のみが編集・削除できるようにする
     def check_owner
-      unless current_user == @user
+      unless current_user && current_user.email == @user.email
         redirect_to users_path, alert: '他のユーザーの投稿を編集・削除することはできません。'
       end
     end

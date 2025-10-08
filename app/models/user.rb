@@ -5,7 +5,7 @@ class User < ApplicationRecord
   validates :password, confirmation: true, if: :password_required?
   validates :password_confirmation, presence: true, if: :password_required?
   
-  validates :email, uniqueness: true, presence: true, if: :email_required?
+  validates :email, presence: true, if: :email_required?
   
   mount_uploader :stand_image, StandImageUploader
   mount_uploader :fly_image, FlyImageUploader
