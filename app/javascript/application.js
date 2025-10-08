@@ -85,7 +85,7 @@ function CalcKneeBendAngle(keypoints) {
   const knee = keypoints[13];
   const ankle = keypoints[15];
 
-  if (CalcAngle(hip, knee, ankle) < 140) {
+  if (CalcAngle(hip, knee, ankle) < 138) {
       return CalcAngle(hip, knee, ankle) + "度\n膝が曲がっています";
   } else {
       return CalcAngle(hip, knee, ankle) + "度⚪︎";
@@ -158,25 +158,29 @@ function BodyDistortion(keypoints) {
 }
 
 function CalcHipHeight(keypoint_stand, keypoint_fly) {
-  const ankle_stand = keypoint_stand[15];
   const hip_stand = keypoint_stand[11];
   const hip_fly = keypoint_fly[11];
-  const hip_height = ankle_stand.y - hip_fly.y;
+  const hip_height = hip_stand.y - hip_fly.y;  // 立ちポーズの腰と空中ポーズの腰を比較
   const hip_positon = hip_fly.x - hip_stand.x;
   
 
   let result = "";
 
-  if (hip_height > 100) {
-    result += "腰の高さ: ⚪︎\n";
-  } else {
-    result += "腰の高さが低いです\n";
-  }
+  // 両方の条件をチェック
+  const isHeightOk = hip_height > 0;  // 空中ポーズの腰が立ちポーズの腰より高い
+  const isPositionOk = hip_positon > 0;
 
-  if (hip_positon > 0) {
-    result += "腰の体重移動: ⚪︎";
+  if (isHeightOk && isPositionOk) {
+    // 両方大丈夫な場合
+    result = "⚪︎";
   } else {
-    result += "真上に飛びすぎです";
+    // 問題がある場合はメッセージを表示
+    if (!isHeightOk) {
+      result += "腰の高さが低いです\n";
+    }
+    if (!isPositionOk) {
+      result += "真上に飛びすぎです";
+    }
   }
 
   return result.trim(); // 結果を返す
