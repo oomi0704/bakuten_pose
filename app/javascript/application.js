@@ -50,7 +50,7 @@ function CalcFootPosition(keypoints_stand , keypoints_fly) {
     const foot_stand = keypoints_stand[15];
     const foot_fly = keypoints_fly[15];
     const foot_position = foot_stand.x - foot_fly.x;
-    if (foot_position < 10) {
+    if (foot_position < -10) {
       return  "飛ぶ前に前に動いています";
     } else {
       return  "⚪︎";
