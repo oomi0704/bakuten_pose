@@ -1,11 +1,13 @@
 class FlyImageUploader < CarrierWave::Uploader::Base
-  # Include RMagick or MiniMagick support:
-  # include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
+  # Include MiniMagick support for image processing
+  include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
-  # storage :fog
+  if Rails.env.production?
+    storage :fog
+  else
+    storage :file
+  end
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -13,18 +15,29 @@ class FlyImageUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
+  # WebP形式に変換
+  process :convert_to_webp
+
+  def convert_to_webp
+    manipulate! do |img|
+      img.format('webp')
+      img
+    end
+  end
+
   def extension_allowlist
-    %w[jpg jpeg gif png]
+    %w[jpg jpeg gif png webp]
+  end
+
+  # ファイル名の拡張子をwebpに変更
+  def filename
+    if original_filename.present?
+      "#{File.basename(original_filename, '.*')}.webp"
+    end
   end
 
   def default_url
     'fly.png'
-  end
-
-  if Rails.env.production?
-    storage :fog
-  else
-    storage :file
   end
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url(*args)
