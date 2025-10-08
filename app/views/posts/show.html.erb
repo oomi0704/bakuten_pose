@@ -1,0 +1,45 @@
+<div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <!-- 名前表示とボタンエリア -->
+    <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8 mb-8">
+      <div class="flex items-center justify-between flex-wrap gap-4">
+        <!-- 名前表示 -->
+        <div class="flex items-center space-x-4">
+          <div class="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+            <span class="text-3xl">👤</span>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500 font-medium mb-1">投稿者</p>
+            <h2 class="text-3xl font-bold text-gray-800">
+              <%= @post.name %>
+            </h2>
+          </div>
+        </div>
+        
+        <!-- ボタンエリア -->
+        <div class="flex items-center space-x-4">
+          <%= link_to posts_path, class: "inline-flex items-center bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md" do %>
+            <span class="mr-2">←</span>
+            一覧に戻る
+          <% end %>
+          
+          <% if current_user && current_user.id == @post.user_id %>
+            <%= link_to edit_post_path(@post), class: "inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md" do %>
+              <span class="mr-2">✏️</span>
+              編集
+            <% end %>
+            <%= button_to @post, method: :delete, 
+                          data: { turbo_confirm: "投稿を削除してもよろしいですか？" },
+                          class: "inline-flex items-center bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 shadow-md" do %>
+              <span class="mr-2">🗑️</span>
+              削除
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 分析エリア -->
+    <%= render 'pose/pose_button', post: @post %>
+  </div>
+</div>
